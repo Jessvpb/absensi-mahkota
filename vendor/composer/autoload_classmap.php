@@ -6,6 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\ResetCutiCommand' => $baseDir . '/app/Console/Commands/ResetCutiCommand.php',
+    'App\\Console\\Commands\\ResetIzinCommand' => $baseDir . '/app/Console/Commands/ResetIzinCommand.php',
+    'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Http\\Controllers\\AbsenController' => $baseDir . '/app/Http/Controllers/AbsenController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -21,6 +24,7 @@ return array(
     'App\\Http\\Controllers\\DashboardController' => $baseDir . '/app/Http/Controllers/DashboardController.php',
     'App\\Http\\Controllers\\HutangController' => $baseDir . '/app/Http/Controllers/HutangController.php',
     'App\\Http\\Controllers\\JabatanController' => $baseDir . '/app/Http/Controllers/JabatanController.php',
+    'App\\Http\\Controllers\\PengajuanDispensasiController' => $baseDir . '/app/Http/Controllers/PengajuanDispensasiController.php',
     'App\\Http\\Controllers\\PengajuanIzinController' => $baseDir . '/app/Http/Controllers/PengajuanIzinController.php',
     'App\\Http\\Controllers\\PengajuanKronologiController' => $baseDir . '/app/Http/Controllers/PengajuanKronologiController.php',
     'App\\Http\\Controllers\\PengajuanPinjamanController' => $baseDir . '/app/Http/Controllers/PengajuanPinjamanController.php',
@@ -33,9 +37,11 @@ return array(
     'App\\Models\\Absen' => $baseDir . '/app/Models/Absen.php',
     'App\\Models\\Cabang' => $baseDir . '/app/Models/Cabang.php',
     'App\\Models\\DetailHutang' => $baseDir . '/app/Models/DetailHutang.php',
+    'App\\Models\\DetailPengajuanDispensasi' => $baseDir . '/app/Models/DetailPengajuanDispensasi.php',
     'App\\Models\\DetailPengajuanIzin' => $baseDir . '/app/Models/DetailPengajuanIzin.php',
     'App\\Models\\Hutang' => $baseDir . '/app/Models/Hutang.php',
     'App\\Models\\Jabatan' => $baseDir . '/app/Models/Jabatan.php',
+    'App\\Models\\PengajuanDispensasi' => $baseDir . '/app/Models/PengajuanDispensasi.php',
     'App\\Models\\PengajuanIzin' => $baseDir . '/app/Models/PengajuanIzin.php',
     'App\\Models\\PengajuanKronologi' => $baseDir . '/app/Models/PengajuanKronologi.php',
     'App\\Models\\PengajuanPinjaman' => $baseDir . '/app/Models/PengajuanPinjaman.php',
@@ -47,6 +53,7 @@ return array(
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\View\\Components\\AppLayout' => $baseDir . '/app/View/Components/AppLayout.php',
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
+    'App\\View\\Components\\StatusBadge' => $baseDir . '/app/View/Components/StatusBadge.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Barryvdh\\DomPDF\\Facade\\Pdf' => $vendorDir . '/barryvdh/laravel-dompdf/src/Facade/Pdf.php',
     'Barryvdh\\DomPDF\\PDF' => $vendorDir . '/barryvdh/laravel-dompdf/src/PDF.php',

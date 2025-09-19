@@ -651,6 +651,9 @@ class ComposerStaticInit0115dbddccf0cd5bb3f8d9794226947f
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\ResetCutiCommand' => __DIR__ . '/../..' . '/app/Console/Commands/ResetCutiCommand.php',
+        'App\\Console\\Commands\\ResetIzinCommand' => __DIR__ . '/../..' . '/app/Console/Commands/ResetIzinCommand.php',
+        'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Http\\Controllers\\AbsenController' => __DIR__ . '/../..' . '/app/Http/Controllers/AbsenController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -666,6 +669,7 @@ class ComposerStaticInit0115dbddccf0cd5bb3f8d9794226947f
         'App\\Http\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/DashboardController.php',
         'App\\Http\\Controllers\\HutangController' => __DIR__ . '/../..' . '/app/Http/Controllers/HutangController.php',
         'App\\Http\\Controllers\\JabatanController' => __DIR__ . '/../..' . '/app/Http/Controllers/JabatanController.php',
+        'App\\Http\\Controllers\\PengajuanDispensasiController' => __DIR__ . '/../..' . '/app/Http/Controllers/PengajuanDispensasiController.php',
         'App\\Http\\Controllers\\PengajuanIzinController' => __DIR__ . '/../..' . '/app/Http/Controllers/PengajuanIzinController.php',
         'App\\Http\\Controllers\\PengajuanKronologiController' => __DIR__ . '/../..' . '/app/Http/Controllers/PengajuanKronologiController.php',
         'App\\Http\\Controllers\\PengajuanPinjamanController' => __DIR__ . '/../..' . '/app/Http/Controllers/PengajuanPinjamanController.php',
@@ -678,9 +682,11 @@ class ComposerStaticInit0115dbddccf0cd5bb3f8d9794226947f
         'App\\Models\\Absen' => __DIR__ . '/../..' . '/app/Models/Absen.php',
         'App\\Models\\Cabang' => __DIR__ . '/../..' . '/app/Models/Cabang.php',
         'App\\Models\\DetailHutang' => __DIR__ . '/../..' . '/app/Models/DetailHutang.php',
+        'App\\Models\\DetailPengajuanDispensasi' => __DIR__ . '/../..' . '/app/Models/DetailPengajuanDispensasi.php',
         'App\\Models\\DetailPengajuanIzin' => __DIR__ . '/../..' . '/app/Models/DetailPengajuanIzin.php',
         'App\\Models\\Hutang' => __DIR__ . '/../..' . '/app/Models/Hutang.php',
         'App\\Models\\Jabatan' => __DIR__ . '/../..' . '/app/Models/Jabatan.php',
+        'App\\Models\\PengajuanDispensasi' => __DIR__ . '/../..' . '/app/Models/PengajuanDispensasi.php',
         'App\\Models\\PengajuanIzin' => __DIR__ . '/../..' . '/app/Models/PengajuanIzin.php',
         'App\\Models\\PengajuanKronologi' => __DIR__ . '/../..' . '/app/Models/PengajuanKronologi.php',
         'App\\Models\\PengajuanPinjaman' => __DIR__ . '/../..' . '/app/Models/PengajuanPinjaman.php',
@@ -692,6 +698,7 @@ class ComposerStaticInit0115dbddccf0cd5bb3f8d9794226947f
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
+        'App\\View\\Components\\StatusBadge' => __DIR__ . '/../..' . '/app/View/Components/StatusBadge.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Barryvdh\\DomPDF\\Facade\\Pdf' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/Facade/Pdf.php',
         'Barryvdh\\DomPDF\\PDF' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/PDF.php',
