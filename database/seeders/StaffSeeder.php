@@ -26,7 +26,7 @@ class StaffSeeder extends Seeder
                 'tgl_keluar' => null,
                 'gaji_pokok' => 12000000,
                 'gaji_tunjangan' => 1500000,
-                'absen_id'=>100,
+                'absen_id'=>'100',
                 'users_id'=>1,
                 'is_active' => true,
                 'created_at' => $now,
