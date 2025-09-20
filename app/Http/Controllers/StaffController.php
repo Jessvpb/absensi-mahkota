@@ -74,7 +74,7 @@ class StaffController extends Controller
         // Validasi input
         $validated = $request->validate([
             'NIP' => 'required|string|max:12|unique:staff,NIP',
-            'absen_id' => 'required|string|max:50|unique:staff,absen_id',
+            'absen_id' => 'required|char|max:3|unique:staff,absen_id',
             'nama' => 'required|string|max:255',
             'JK' => 'required|in:L,P',
             'TTL' => 'required|date',
