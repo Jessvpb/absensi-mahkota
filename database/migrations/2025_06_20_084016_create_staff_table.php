@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('gaji_pokok', 12, 2);
             $table->decimal('gaji_tunjangan', 12, 2);
 
-            $table->string('absen_id')->nullable()->unique();
+            $table->char('absen_id', 3)->nullable()->unique();
 
             $table->unsignedBigInteger('users_id')->nullable()->unique();
             $table->foreign('users_id')->references('id')->on('users');
