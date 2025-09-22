@@ -68,6 +68,8 @@ class AbsenController extends Controller
             'Sick'       => 'S',
             'Permission' => 'I',
             'Dispensation' => 'D',
+            'Early Leave' => 'E',
+            'Late and Early Leave' => 'L',
         ];
 
         $bulan = $request->bulan;

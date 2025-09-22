@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('cabang_id');
             $table->foreign('cabang_id')->references('id')->on('cabang');
             $table->date('tanggal');
-            $table->enum('status', ['A', 'H', 'I', 'S', 'O', 'C', 'T', 'D']);
+            $table->enum('status', ['A', 'H', 'I', 'S', 'O', 'C', 'T', 'D', 'E', 'L']);
             // absen hadir izin sakit off cuti telat
             $table->string('keterangan')->nullable();
             $table->timestamps();
