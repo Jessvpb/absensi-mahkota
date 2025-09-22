@@ -63,6 +63,17 @@
                             required>
                     </div>
 
+                    <!-- Absen ID -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-fingerprint mr-1 text-yellow-400"></i>
+                            Absen ID
+                        </label>
+                        <input type="text" name="absen_id" value="{{ old('absen_id', $staff->absen_id) }}"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
+                    </div>
+
                     <!-- Nama -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">
