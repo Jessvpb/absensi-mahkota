@@ -291,7 +291,7 @@
                     <a href="{{ route('absen.riwayat') }}"
                         class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.riwayat') ? 'active' : '' }}">
                         <i class="fas fa-receipt w-5 text-center"></i>
-                        <span class="ml-3">Riwayat Absen</span>
+                        <span class="sidebar-text ml-3">Riwayat Absen</span>
                     </a>
 
                     <a href="{{ route('slip.karyawan.riwayat') }}"
