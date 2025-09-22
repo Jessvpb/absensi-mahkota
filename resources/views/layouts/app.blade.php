@@ -283,6 +283,16 @@
                     @endif
                 @endauth
 
+                <div class="pt-4">
+                    <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                        Off Karyawan</p>
+                    <a href="{{ route('absen.riwayat') }}"
+                        class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.riwayat') ? 'active' : '' }}">
+                        <i class="fas fa-receipt w-5 text-center"></i>
+                        <span class="ml-3">Jadwal Off</span>
+                    </a>
+                </div>
+
                 <!-- Personal Section -->
                 <div class="pt-4">
                     <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
@@ -551,16 +561,6 @@
                     </div>
                 @endif
             @endauth
-
-            <div class="pt-4">
-                <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                    Off Karyawan</p>
-                <a href="{{ route('absen.riwayat') }}"
-                    class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.riwayat') ? 'active' : '' }}">
-                    <i class="fas fa-receipt w-5 text-center"></i>
-                    <span class="ml-3">Jadwal Off</span>
-                </a>
-            </div>
 
             <!-- Personal Section -->
             <div class="pt-4">
