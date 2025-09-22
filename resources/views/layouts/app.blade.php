@@ -264,13 +264,13 @@
 
                     {{-- Section Jadwal Off --}}
                     <div class="px-6 py-2 text-gray-400 text-xs font-semibold uppercase tracking-wider">
-                        Jadwal Off
+                        Jadwal Off Karyawan
                     </div>
 
                     <a href="{{ route('absen.index') }}"
-                        class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200 {{ request()->is('absen.index') ? 'bg-gray-200 font-semibold' : '' }}">
-                        <i class="fas fa-calendar-alt w-5"></i>
-                        <span class="ml-3">Data Jadwal Off</span>
+                        class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->is('absen.index') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-alt w-5 text-center"></i>
+                        <span class="sidebar-text ml-3">Data Jadwal Off</span>
                     </a>
 
 
