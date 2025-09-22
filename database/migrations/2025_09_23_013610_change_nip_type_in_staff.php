@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('staff', function (Blueprint $table) {
             // Ubah absen_id dari unsignedBigInteger -> CHAR(3)
-            $table->char('absen_id', 3)->nullable()->unique()->change();
+            $table->char('absen_id', 3)->nullable()->change();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('staff', function (Blueprint $table) {
             // Kembalikan ke unsignedBigInteger
-            $table->unsignedBigInteger('absen_id')->nullable()->unique()->change();
+            $table->unsignedBigInteger('absen_id')->nullable()->change();
         });
     }
 };
