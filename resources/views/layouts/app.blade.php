@@ -263,15 +263,16 @@
                     @endif
 
                     {{-- Section Jadwal Off --}}
-                    <div class="px-6 py-2 text-gray-400 text-xs font-semibold uppercase tracking-wider">
-                        Jadwal Off Karyawan
-                    </div>
+                    <div class="pt-4">
+                        <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                            Jadwal Off Karyawan</p>
 
-                    <a href="{{ route('absen.index') }}"
-                        class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->is('absen.index') ? 'active' : '' }}">
-                        <i class="fas fa-calendar-alt w-5 text-center"></i>
-                        <span class="sidebar-text ml-3">Data Jadwal Off</span>
-                    </a>
+                        <a href="{{ route('absen.index') }}"
+                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->is('absen.index') ? 'active' : '' }}">
+                            <i class="fas fa-calendar-alt w-5 text-center"></i>
+                            <span class="sidebar-text ml-3">Data Jadwal Off</span>
+                        </a>
+                    </div>
 
 
                     @if (auth()->user()->role === 'kepala')
