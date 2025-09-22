@@ -45,88 +45,81 @@
             @method('PATCH')
 
             <!-- Personal Information -->
-            <div class="bg-gray-800/50 rounded-2xl p-6">
-                <h3 class="text-xl font-semibold mb-6 flex items-center">
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
                     <i class="fas fa-user mr-2 text-yellow-400"></i>
                     Informasi Personal
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                     <!-- NIP -->
                     <div>
-                        <label class="block text-sm font-medium mb-2">
-                            <i class="fas fa-id-card mr-s1 text-yellow-400"></i>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-id-card mr-1 text-yellow-400"></i>
                             NIP
                         </label>
-                        <input type="text" name="NIP" maxlength="12" placeholder="Masukkan NIP"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400/20">
-                    </div>
-
-                    <!-- Absen ID -->
-                    <div>
-                        <label class="block text-sm font-medium mb-2">
-                            <i class="fas fa-fingerprint mr-1 text-yellow-400"></i>
-                            Absen ID
-                        </label>
-                        <input type="text" name="absen_id" placeholder="Masukkan Absen ID"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400/20">
+                        <input type="text" name="NIP" value="{{ old('NIP', $staff->NIP) }}"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
                     </div>
 
                     <!-- Nama -->
                     <div>
-                        <label class="block text-sm font-medium mb-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
                             <i class="fas fa-user mr-1 text-yellow-400"></i>
                             Nama Lengkap
                         </label>
-                        <input type="text" name="nama" placeholder="Masukkan nama lengkap"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400/20">
+                        <input type="text" name="nama" value="{{ old('nama', $staff->nama) }}"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
                     </div>
 
                     <!-- Jenis Kelamin -->
                     <div>
-                        <label class="block text-sm font-medium mb-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
                             <i class="fas fa-venus-mars mr-1 text-yellow-400"></i>
                             Jenis Kelamin
                         </label>
                         <select name="JK"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white focus:ring-2 focus:ring-yellow-400/20">
-                            <option value="">-- Pilih Jenis Kelamin --</option>
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
+                            <option value="L" {{ old('JK', $staff->JK) == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="P" {{ old('JK', $staff->JK) == 'P' ? 'selected' : '' }}>Perempuan</option>
                         </select>
                     </div>
 
                     <!-- Tanggal Lahir -->
                     <div>
-                        <label class="block text-sm font-medium mb-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
                             <i class="fas fa-calendar mr-1 text-yellow-400"></i>
                             Tanggal Lahir
                         </label>
-                        <input type="date" name="TTL"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white focus:ring-2 focus:ring-yellow-400/20">
+                        <input type="date" name="TTL" value="{{ old('TTL', $staff->TTL) }}"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
                     </div>
 
                     <!-- No Telepon -->
                     <div>
-                        <label class="block text-sm font-medium mb-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
                             <i class="fas fa-phone mr-1 text-yellow-400"></i>
                             No Telepon
                         </label>
-                        <input type="text" name="notel" placeholder="Masukkan nomor telepon"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400/20">
+                        <input type="text" name="notel" value="{{ old('notel', $staff->notel) }}"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
                     </div>
 
                     <!-- Alamat -->
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
                             <i class="fas fa-map-marker-alt mr-1 text-yellow-400"></i>
                             Alamat
                         </label>
-                        <textarea name="alamat" rows="3" placeholder="Masukkan alamat lengkap"
-                            class="w-full px-4 py-3 bg-gray-700 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-yellow-400/20"></textarea>
+                        <textarea name="alamat" rows="3"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>{{ old('alamat', $staff->alamat) }}</textarea>
                     </div>
-
                 </div>
             </div>
 
