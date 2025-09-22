@@ -69,12 +69,11 @@ class StaffController extends Controller
         $jabatan = Jabatan::where('is_active', '=', '1')->get();
         return view('staff.add', compact('cabang', 'jabatan'));
     }
-    public function add(Request $request)
-    {
-        // Validasi input
+
+    public function add(Request $request) {
         $validated = $request->validate([
             'NIP' => 'required|string|max:12|unique:staff,NIP',
-            'absen_id' => 'required|char|max:3|unique:staff,absen_id',
+            'absen_id' => 'required|string|max:3|unique:staff,absen_id',
             'nama' => 'required|string|max:255',
             'JK' => 'required|in:L,P',
             'TTL' => 'required|date',
@@ -88,7 +87,8 @@ class StaffController extends Controller
             'cabang_id' => 'required|exists:cabang,id',
             'jabatan_id' => 'required|exists:jabatan,id',
         ], [
-            'NIP.max' => 'NIP tidak boleh lebih dari 12 karakter.', // Pesan error kustom untuk max:12
+            'NIP.max' => 'NIP tidak boleh lebih dari 12 karakter.',
+            'absen_id.max' => 'Absen ID maksimal 3 karakter.',
         ]);
 
         // Set default nilai gaji_tunjangan ke 0 jika tidak diisi
@@ -110,14 +110,14 @@ class StaffController extends Controller
             'is_active' => $validated['is_active'],
         ]);
 
-        // Tambah relasi cabang aktif
+        // relasi cabang
         $staff->cabang()->attach($validated['cabang_id'], [
             'is_active' => true,
             'tanggal_mulai' => $validated['tgl_masuk'],
             'tanggal_selesai' => null,
         ]);
 
-        // Tambah relasi jabatan aktif
+        // relasi jabatan
         $staff->jabatan()->attach($validated['jabatan_id'], [
             'is_active' => true,
             'tanggal_mulai' => $validated['tgl_masuk'],
@@ -126,6 +126,7 @@ class StaffController extends Controller
 
         return redirect()->route('staff.view')->with('success', 'Staff berhasil ditambahkan.');
     }
+
     public function editView($id)
     {
         $staff = Staff::with(['cabang' => function ($q) {
@@ -143,16 +144,18 @@ class StaffController extends Controller
 
         return view('staff.edit', compact('staff', 'cabang', 'jabatan', 'cabangAktif', 'jabatanAktif'));
     }
-    public function edit(Request $request, $id)
-    {
+
+    public function edit(Request $request, $id){
         $staff = Staff::findOrFail($id);
+
         $validated = $request->validate([
-            'NIP'             => 'required|unique:staff,NIP,' . $staff->id,
-            'nama'            => 'required',
+            'NIP'             => 'required|string|max:12|unique:staff,NIP,' . $staff->id,
+            'absen_id'        => 'required|string|max:3|unique:staff,absen_id,' . $staff->id,
+            'nama'            => 'required|string|max:255',
             'JK'              => 'required|in:L,P',
             'TTL'             => 'required|date',
-            'notel'           => 'required',
-            'alamat'          => 'required',
+            'notel'           => 'required|string|max:20',
+            'alamat'          => 'required|string',
             'tgl_masuk'       => 'required|date',
             'tgl_keluar'      => 'nullable|date|after_or_equal:tgl_masuk',
             'gaji_pokok'      => 'required|numeric',
@@ -173,10 +176,10 @@ class StaffController extends Controller
             $validated['is_active'] = false;
         }
 
-        // Update data utama
+        // Update data staff termasuk absen_id
         $staff->update($validated);
 
-        // ==== Cabang ====
+        // ===== Cabang & Jabatan handling tetap sama =====
         if (!empty($validated['cabang_id_new'])) {
             $currentCabang = $staff->cabang()->wherePivot('is_active', true)->first();
             if (!$currentCabang || $currentCabang->id != $validated['cabang_id_new']) {
@@ -234,13 +237,14 @@ class StaffController extends Controller
 
                 // Baru hapus user-nya
                 if ($user) {
-                    $user->delete(); // atau forceDelete()
+                    $user->delete();
                 }
             }
         }
 
         return redirect()->route('staff.view')->with('success', 'Data staff berhasil diperbarui.');
     }
+
     public function userForm($id)
     {
         $staff = Staff::findOrFail($id);
