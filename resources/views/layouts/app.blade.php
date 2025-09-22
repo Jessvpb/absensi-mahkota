@@ -183,10 +183,10 @@
 
                 @auth
                     @if (auth()->user()->role === 'admin')
-                        <!-- Admin Only Section -->
+                        <!-- Admin Only Section (Master Data)-->
                         <div class="pt-4">
                             <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                                Admin Panel</p>
+                                Master Data</p>
 
                             <a href="{{ route('cabang.view') }}"
                                 class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('cabang.*') ? 'active' : '' }}">
@@ -206,14 +206,11 @@
                                 <i class="fas fa-briefcase w-5 text-center"></i>
                                 <span class="sidebar-text ml-3">Data Jabatan</span>
                             </a>
-
-                            <!-- Absen Management -->
-                            <a href="{{ route('absen.index') }}"
-                                class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.index') ? 'active' : '' }}">
-                                <i class="fas fa-calendar-alt w-5 text-center"></i>
-                                <span class="sidebar-text ml-3">Data Absen</span>
-                            </a>
-
+                        </div>
+                        <!-- Admin Only Section (Pengajuan Karyawan)-->
+                        <div class="pt-4">
+                            <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                                Pengajuan Karyawan</p>
                             <a href="{{ route('kronologi.view') }}"
                                 class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('kronologi.view') ? 'active' : '' }}">
                                 <i class="fas fa-clock w-5 text-center"></i>
@@ -236,6 +233,18 @@
                                 class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('pengajuandispensasi.view') ? 'active' : '' }}">
                                 <i class="fas fa-stopwatch w-5 text-center"></i>
                                 <span class="sidebar-text ml-3">Pengajuan Dispensasi</span>
+                            </a>
+                        </div>
+
+                        <!-- Admin Only Section (Penggajian)-->
+                        <div class="pt-4">
+                            <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                                Penggajian</p>
+                            <!-- Absen Management -->
+                            <a href="{{ route('absen.index') }}"
+                                class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.index') ? 'active' : '' }}">
+                                <i class="fas fa-calendar-alt w-5 text-center"></i>
+                                <span class="sidebar-text ml-3">Data Absen</span>
                             </a>
 
                             <a href="{{ route('slip.view') }}"
