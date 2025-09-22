@@ -459,58 +459,82 @@
 
             @auth
                 @if (auth()->user()->role === 'admin')
-                    <!-- Admin Only Section -->
+                    <!-- Admin Only Section (Master Data)-->
                     <div class="pt-4">
-                        <p class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Admin Panel</p>
+                        <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                            Master Data</p>
 
                         <a href="{{ route('cabang.view') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('cabang.*') ? 'active' : '' }}">
                             <i class="fas fa-building w-5 text-center"></i>
-                            <span class="ml-3">Data Cabang</span>
+                            <span class="sidebar-text ml-3">Data Cabang</span>
+                        </a>
+
+                        <!-- Staff Management -->
+                        <a href="{{ route('staff.view') }}"
+                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('staff.*') ? 'active' : '' }}">
+                            <i class="fas fa-users w-5 text-center"></i>
+                            <span class="sidebar-text ml-3">Data Staff</span>
                         </a>
 
                         <a href="{{ route('jabatan.view') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('jabatan.*') ? 'active' : '' }}">
                             <i class="fas fa-briefcase w-5 text-center"></i>
-                            <span class="ml-3">Data Jabatan</span>
+                            <span class="sidebar-text ml-3">Data Jabatan</span>
                         </a>
-
-                        <!-- Absen Management -->
-                        <a href="{{ route('absen.index') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.index') ? 'active' : '' }}">
-                            <i class="fas fa-calendar-alt w-5 text-center"></i>
-                            <span class="ml-3">Data Absen</span>
-                        </a>
-
+                    </div>
+                    <!-- Admin Only Section (Pengajuan Karyawan)-->
+                    <div class="pt-4">
+                        <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                            Pengajuan Karyawan</p>
                         <a href="{{ route('kronologi.view') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('kronologi.view') ? 'active' : '' }}">
                             <i class="fas fa-clock w-5 text-center"></i>
-                            <span class="ml-3">Pengajuan Denda</span>
+                            <span class="sidebar-text ml-3">Pengajuan Denda</span>
                         </a>
 
                         <a href="{{ route('pinjaman.view') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('pinjaman.view') ? 'active' : '' }}">
                             <i class="fas fa-hand-holding-usd w-5 text-center"></i>
-                            <span class="ml-3">Pengajuan Pinjaman</span>
+                            <span class="sidebar-text ml-3">Pengajuan Pinjaman</span>
                         </a>
 
                         <a href="{{ route('pengajuanizin.view') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('pengajuanizin.view') ? 'active' : '' }}">
                             <i class="fas fa-calendar-check w-5 text-center"></i>
-                            <span class="ml-3">Pengajuan Izin</span>
+                            <span class="sidebar-text ml-3">Pengajuan Izin</span>
+                        </a>
+
+                        <a href="{{ route('pengajuandispensasi.view') }}"
+                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('pengajuandispensasi.view') ? 'active' : '' }}">
+                            <i class="fas fa-stopwatch w-5 text-center"></i>
+                            <span class="sidebar-text ml-3">Pengajuan Dispensasi</span>
+                        </a>
+                    </div>
+
+                    <!-- Admin Only Section (Penggajian)-->
+                    <div class="pt-4">
+                        <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                            Penggajian</p>
+                        <!-- Absen Management -->
+                        <a href="{{ route('absen.index') }}"
+                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.index') ? 'active' : '' }}">
+                            <i class="fas fa-calendar-alt w-5 text-center"></i>
+                            <span class="sidebar-text ml-3">Data Absen</span>
                         </a>
 
                         <a href="{{ route('slip.view') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('slip.view') ? 'active' : '' }}">
                             <i class="fas fa-money-bill-wave w-5 text-center"></i>
-                            <span class="ml-3">Gaji</span>
+                            <span class="sidebar-text ml-3">Gaji</span>
                         </a>
 
                         <a href="{{ route('slip.riwayat') }}"
                             class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('slip.riwayat') ? 'active' : '' }}">
                             <i class="fas fa-file-invoice-dollar w-5 text-center"></i>
-                            <span class="ml-3">Riwayat Gaji</span>
+                            <span class="sidebar-text ml-3">Riwayat Gaji All Staff</span>
                         </a>
+
                     </div>
                 @endif
 
@@ -527,6 +551,16 @@
                     </div>
                 @endif
             @endauth
+
+            <div class="pt-4">
+                <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                    Off Karyawan</p>
+                <a href="{{ route('absen.riwayat') }}"
+                    class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.riwayat') ? 'active' : '' }}">
+                    <i class="fas fa-receipt w-5 text-center"></i>
+                    <span class="ml-3">Jadwal Off</span>
+                </a>
+            </div>
 
             <!-- Personal Section -->
             <div class="pt-4">
