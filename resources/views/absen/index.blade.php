@@ -224,6 +224,16 @@
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30">E</span>
+                            <span class="text-white text-sm">Early Leave</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">L</span>
+                            <span class="text-white text-sm">Late & Early Leave</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
                             <span class="text-white text-sm">Tidak Ada Data</span>
                         </div>
