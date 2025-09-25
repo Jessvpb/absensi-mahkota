@@ -55,10 +55,33 @@ class PengajuanIzinController extends Controller
         ]);
 
         $staff = Staff::where('users_id', Auth::id())->firstOrFail();
+        $cabang = $staff->cabang()->first(); // ambil cabang aktif
+        $cabangId = $cabang->id;
+        $maxOff = $cabang->max_off_per_day ?? 999; // batas off per hari dari cabang
 
+        // cek setiap tanggal jika status 'O'
+        foreach ($request->detail as $item) {
+            if ($item['status'] === 'O') {
+                $tanggal = $item['tanggal'];
+
+                $jumlahOff = PengajuanIzin::whereHas('detail_pengajuan_izin', function($q) use ($tanggal) {
+                        $q->where('tanggal', $tanggal)->where('status', 'O');
+                    })
+                    ->where('cabang_id', $cabangId)
+                    ->count();
+
+                if ($jumlahOff >= $maxOff) {
+                    return back()->withErrors([
+                        'detail' => "Jumlah karyawan off di cabang ini pada tanggal $tanggal sudah mencapai batas ($maxOff orang)."
+                    ])->withInput();
+                }
+            }
+        }
+
+        // jika lolos cek, buat pengajuan
         $pengajuan = PengajuanIzin::create([
             'staff_id' => $staff->id,
-            'cabang_id' => $staff->cabang()->first()->id,
+            'cabang_id' => $cabangId,
             'validasi_kepalacabang' => null,
             'kepala_id' => null,
             'validasi_admin' => null,
@@ -74,13 +97,15 @@ class PengajuanIzinController extends Controller
                 'pengganti' => $item['pengganti'],
             ]);
         }
+
         $user = Auth::user();
         if ($user->role === 'admin') {
             return redirect()->route('pengajuanizin.view')->with('success', 'Pengajuan berhasil ditambahkan.');
-        }else{
+        } else {
             return redirect()->route('dashboard')->with('success', 'Pengajuan berhasil ditambahkan.');
         }
     }
+
 
     public function detail($id)
     {
@@ -99,10 +124,16 @@ class PengajuanIzinController extends Controller
             'aksi' => 'required|in:terima,tolak',
         ]);
 
-        $pengajuan = PengajuanIzin::with('detail_pengajuan_izin')->findOrFail($id);
+        $pengajuan = PengajuanIzin::with('detail_pengajuan_izin.staff.staffCabang')->findOrFail($id);
 
         $staff = Auth::user()->staff;
         $role = Auth::user()->role;
+
+        // Ambil cabang aktif dari staff pengaju
+        $staffIzin = $pengajuan->staff;
+        $cabang = $staffIzin->staffCabang()->where('is_active', true)->first();
+        $cabangId = $cabang->cabang_id ?? null;
+        $maxOff = $cabang->cabang->max_off_per_day ?? 999;
 
         if ($role === 'kepala') {
             $updateData = [
@@ -110,7 +141,6 @@ class PengajuanIzinController extends Controller
                 'kepala_id' => $staff->id,
             ];
 
-            // Append rejection reason to penjelasan if rejected
             if ($request->aksi === 'tolak') {
                 $updateData['keterangan'] = $request->alasan . "(Kepala Cabang)";
                 $updateData['validasi_admin'] = 0;
@@ -124,7 +154,6 @@ class PengajuanIzinController extends Controller
                 'admin_id' => $staff->id,
             ];
 
-            // Append rejection reason to penjelasan if rejected
             if ($request->aksi === 'tolak') {
                 $updateData['keterangan'] = $request->alasan . "(Admin)";
             }
@@ -132,40 +161,44 @@ class PengajuanIzinController extends Controller
             $pengajuan->update($updateData);
         }
 
-        // if (!$staff) {
-        //     abort(403, 'User ini tidak terhubung dengan data staff.');
-        // }
+        // Cek batas maksimal off hanya jika aksi 'terima'
+        if ($request->aksi === 'terima' && $cabangId) {
+            foreach ($pengajuan->detail_pengajuan_izin as $detail) {
+                if ($detail->status !== 'O') continue;
 
-        // $pengajuan->validasi_admin = $request->aksi === 'terima' ? 1 : 0;
-        // $pengajuan->admin_id = $staff->id;
-        // $pengajuan->save();
+                $jumlahOff = PengajuanIzin::whereHas('detail_pengajuan_izin', function($q) use ($detail) {
+                        $q->where('tanggal', $detail->tanggal)->where('status', 'O');
+                    })
+                    ->where('cabang_id', $cabangId)
+                    ->count();
 
-        if ($request->aksi === 'terima') {
-            $staffIzin = $pengajuan->staff;
-            $cabangId = $staffIzin->staffCabang()->where('is_active', true)->value('cabang_id');
-
-            if ($cabangId) {
-                foreach ($pengajuan->detail_pengajuan_izin as $detail) {
-                    // Hapus data absen yang sudah ada di tanggal itu
-                    Absen::where('staff_id', $staffIzin->id)
-                        ->whereDate('tanggal', $detail->tanggal)
-                        ->delete();
-
-                    // Masukkan data absen dari pengajuan
-                    Absen::create([
-                        'staff_id' => $staffIzin->id,
-                        'cabang_id' => $cabangId,
-                        'tanggal' => $detail->tanggal,
-                        'status' => $detail->status,
-                        'keterangan' => $detail->keterangan,
-                        'pengganti' => $detail->pengganti,
+                if ($jumlahOff > $maxOff) {
+                    return back()->withErrors([
+                        'detail' => "Jumlah karyawan off di cabang ini pada tanggal {$detail->tanggal} sudah mencapai batas ($maxOff orang)."
                     ]);
                 }
+            }
+
+            // Jika lolos cek, simpan ke absen
+            foreach ($pengajuan->detail_pengajuan_izin as $detail) {
+                Absen::where('staff_id', $staffIzin->id)
+                    ->whereDate('tanggal', $detail->tanggal)
+                    ->delete();
+
+                Absen::create([
+                    'staff_id' => $staffIzin->id,
+                    'cabang_id' => $cabangId,
+                    'tanggal' => $detail->tanggal,
+                    'status' => $detail->status,
+                    'keterangan' => $detail->keterangan,
+                    'pengganti' => $detail->pengganti,
+                ]);
             }
         }
 
         return redirect()->route('pengajuanizin.detail', $id)->with('success', 'Pengajuan telah divalidasi.');
     }
+
 
 
     public function riwayat()

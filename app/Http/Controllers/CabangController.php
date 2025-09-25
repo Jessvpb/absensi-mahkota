@@ -43,6 +43,7 @@ class CabangController extends Controller
             'jam_masuk' => 'required|date_format:H:i',
             'jam_pulang' => 'required|date_format:H:i|after:jam_masuk',
             'is_active' => 'required|in:0,1',
+            'max_off_per_day' => 'required|integer|min:1', // <-- tambahkan validasi ini
         ]);
 
         Cabang::create([
@@ -51,6 +52,7 @@ class CabangController extends Controller
             'jam_masuk' => $request->jam_masuk,
             'jam_pulang' => $request->jam_pulang,
             'is_active' => $request->is_active,
+            'max_off_per_day' => $request->max_off_per_day, // <-- simpan ke DB
         ]);
 
         return redirect()->route('cabang.view')->with('success', 'Data cabang berhasil disimpan!');
@@ -70,8 +72,8 @@ class CabangController extends Controller
             'jam_masuk' => 'required|date_format:H:i',
             'jam_pulang' => 'required|date_format:H:i|after:jam_masuk',
             'is_active' => 'required|in:0,1',
+            'max_off_per_day' => 'required|integer|min:1', // <-- tambahkan validasi ini
         ]);
-        // dd($validated);
 
         $cabang->update($validated);
 

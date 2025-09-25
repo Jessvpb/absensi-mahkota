@@ -42,7 +42,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div class="flex items-center text-yellow-400">
                         <i class="fas fa-calendar-alt mr-2"></i>
-                        <span class="text-sm">Maksimal Off/Bulan: {{ $cabang->max_off_per_bulan }}</span>
+                        <span class="text-sm">Maksimal Off/Day: {{ $cabang->max_off_per_day }}</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -118,17 +118,17 @@
                     @enderror
                 </div>
 
-                {{-- Maksimal Off per Bulan --}}
+                {{-- Maksimal Off per Day --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">
                         <i class="fas fa-calendar-alt mr-1 text-yellow-400"></i>
-                        Maksimal Off per Bulan
+                        Maksimal Off per Day
                     </label>
-                    <input type="number" name="max_off_per_bulan"
-                        value="{{ old('max_off_per_bulan', $cabang->max_off_per_bulan) }}"
+                    <input type="number" name="max_off_per_day"
+                        value="{{ old('max_off_per_day', $cabang->max_off_per_day) }}"
                         class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
                         min="0" required>
-                    @error('max_off_per_bulan')
+                    @error('max_off_per_day')
                         <p class="text-red-400 text-sm mt-1">
                             <i class="fas fa-exclamation-circle mr-1"></i>
                             {{ $message }}

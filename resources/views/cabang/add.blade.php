@@ -71,10 +71,10 @@
                         <i class="fas fa-calendar-minus mr-1 text-yellow-400"></i>
                         Maksimal Off per Bulan
                     </label>
-                    <input type="number" name="max_off" value="{{ old('max_off', 0) }}" min="0"
+                    <input type="number" name="max_off_per_day" value="{{ old('max_off_per_day', 0) }}" min="0"
                         class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
                         placeholder="Masukkan maksimal off per bulan" required>
-                    @error('max_off')
+                    @error('max_off_per_day')
                         <p class="text-red-400 text-sm mt-1">
                             <i class="fas fa-exclamation-circle mr-1"></i>
                             {{ $message }}
