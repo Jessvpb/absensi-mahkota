@@ -107,7 +107,7 @@
                 <!-- Legend -->
                 <div class="mt-6 p-4 bg-gray-800/30 rounded-lg border border-gray-700/50">
                     <h4 class="text-lg font-semibold text-white mb-4">📖 Keterangan Status</h4>
-                    <div class="flex flex-wrap items-center gap-2 sm:gap-4 md:gap-6 lg:gap-8">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/40">O</span>
