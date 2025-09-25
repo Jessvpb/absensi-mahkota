@@ -80,57 +80,20 @@
                             {{ $message }}
                         </p>
                     @enderror
+                </div>
 
-                    <!-- Jam Operasional -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Jam Masuk -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">
-                                <i class="fas fa-sign-in-alt mr-1 text-green-400"></i>
-                                Jam Masuk
-                            </label>
-                            <input type="time" name="jam_masuk" value="{{ old('jam_masuk') }}"
-                                class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
-                                required>
-                            @error('jam_masuk')
-                                <p class="text-red-400 text-sm mt-1">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
-
-                        <!-- Jam Pulang -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">
-                                <i class="fas fa-sign-out-alt mr-1 text-red-400"></i>
-                                Jam Pulang
-                            </label>
-                            <input type="time" name="jam_pulang" value="{{ old('jam_pulang') }}"
-                                class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
-                                required>
-                            @error('jam_pulang')
-                                <p class="text-red-400 text-sm mt-1">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Status -->
+                <!-- Jam Operasional -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Jam Masuk -->
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-2">
-                            <i class="fas fa-toggle-on mr-1 text-yellow-400"></i>
-                            Status Aktif
+                            <i class="fas fa-sign-in-alt mr-1 text-green-400"></i>
+                            Jam Masuk
                         </label>
-                        <select name="is_active"
+                        <input type="time" name="jam_masuk" value="{{ old('jam_masuk') }}"
                             class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
                             required>
-                            <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Aktif</option>
-                            <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Tidak Aktif</option>
-                        </select>
-                        @error('is_active')
+                        @error('jam_masuk')
                             <p class="text-red-400 text-sm mt-1">
                                 <i class="fas fa-exclamation-circle mr-1"></i>
                                 {{ $message }}
@@ -138,18 +101,56 @@
                         @enderror
                     </div>
 
-                    <!-- Submit Buttons -->
-                    <div class="flex items-center justify-end space-x-4 pt-6">
-                        <a href="{{ route('cabang.view') }}"
-                            class="px-6 py-3 bg-gray-600/50 text-gray-300 rounded-xl hover:bg-gray-600/70 transition-colors duration-200">
-                            Batal
-                        </a>
-                        <button type="submit"
-                            class="px-8 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-yellow-400/25">
-                            <i class="fas fa-save mr-2"></i>
-                            Simpan Cabang
-                        </button>
+                    <!-- Jam Pulang -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            <i class="fas fa-sign-out-alt mr-1 text-red-400"></i>
+                            Jam Pulang
+                        </label>
+                        <input type="time" name="jam_pulang" value="{{ old('jam_pulang') }}"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
+                        @error('jam_pulang')
+                            <p class="text-red-400 text-sm mt-1">
+                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">
+                        <i class="fas fa-toggle-on mr-1 text-yellow-400"></i>
+                        Status Aktif
+                    </label>
+                    <select name="is_active"
+                        class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                        required>
+                        <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Aktif</option>
+                        <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Tidak Aktif</option>
+                    </select>
+                    @error('is_active')
+                        <p class="text-red-400 text-sm mt-1">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="flex items-center justify-end space-x-4 pt-6">
+                    <a href="{{ route('cabang.view') }}"
+                        class="px-6 py-3 bg-gray-600/50 text-gray-300 rounded-xl hover:bg-gray-600/70 transition-colors duration-200">
+                        Batal
+                    </a>
+                    <button type="submit"
+                        class="px-8 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-yellow-400/25">
+                        <i class="fas fa-save mr-2"></i>
+                        Simpan Cabang
+                    </button>
+                </div>
             </form>
         </div>
 
