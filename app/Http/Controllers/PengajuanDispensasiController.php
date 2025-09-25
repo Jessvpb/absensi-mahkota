@@ -50,7 +50,7 @@ class PengajuanDispensasiController extends Controller
 
         $staff = Staff::where('users_id', Auth::id())->firstOrFail();
 
-        // Ambil semua tanggal pengajuan
+        // Ambil semua tanggal pengajuan dan ubah ke Carbon
         $tanggalList = array_map(fn($item) => Carbon::parse($item['tanggal']), $request->detail);
 
         // 1. Cek semua tanggal harus di bulan yang sama
@@ -72,6 +72,7 @@ class PengajuanDispensasiController extends Controller
             ])->withInput();
         }
 
+        // Jika lolos pengecekan, buat pengajuan
         $pengajuan = PengajuanDispensasi::create([
             'staff_id' => $staff->id,
             'validasi_admin' => null,
@@ -86,10 +87,11 @@ class PengajuanDispensasiController extends Controller
                 'keterangan' => $item['keterangan'],
             ]);
         }
+
         $user = Auth::user();
         if ($user->role === 'admin') {
             return redirect()->route('pengajuandispensasi.view')->with('success', 'Pengajuan berhasil ditambahkan.');
-        }else{
+        } else {
             return redirect()->route('dashboard')->with('success', 'Pengajuan berhasil ditambahkan.');
         }
     }
