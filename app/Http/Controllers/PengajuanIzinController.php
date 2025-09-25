@@ -59,6 +59,24 @@ class PengajuanIzinController extends Controller
         $cabangId = $cabang->id;
         $maxOff = $cabang->max_off_per_day ?? 999; // batas off per hari dari cabang
 
+        // Batasi jumlah hari maksimal 14
+        if (count($request->detail) > 14) {
+            return back()->withErrors([
+                'detail' => 'Jumlah hari pengajuan maksimal 14 hari.'
+            ])->withInput();
+        }
+
+        // Pastikan semua tanggal dalam bulan yang sama
+        $bulanAwal = Carbon::parse($request->detail[0]['tanggal'])->format('Y-m');
+        foreach ($request->detail as $item) {
+            if (Carbon::parse($item['tanggal'])->format('Y-m') !== $bulanAwal) {
+                return back()->withErrors([
+                    'detail' => 'Semua tanggal pengajuan harus berada di bulan yang sama.'
+                ])->withInput();
+            }
+        }
+
+
         // cek setiap tanggal jika status 'O'
         foreach ($request->detail as $item) {
             if ($item['status'] === 'O') {

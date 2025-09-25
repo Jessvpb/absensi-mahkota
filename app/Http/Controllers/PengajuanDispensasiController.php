@@ -50,6 +50,21 @@ class PengajuanDispensasiController extends Controller
 
         $staff = Staff::where('users_id', Auth::id())->firstOrFail();
 
+        if (count($request->detail) > 14) {
+            return back()->withErrors([
+            'detail' => 'Jumlah hari pengajuan dispensasi maksimal 14 hari.'
+            ])->withInput();
+        }
+
+        $bulanAwal = Carbon::parse($request->detail[0]['tanggal'])->format('Y-m');
+        foreach ($request->detail as $item) {
+            if (Carbon::parse($item['tanggal'])->format('Y-m') !== $bulanAwal) {
+                return back()->withErrors([
+                    'detail' => 'Semua tanggal pengajuan dispensasi harus berada di bulan yang sama.'
+                    ])->withInput();
+                }
+        }
+
         $pengajuan = PengajuanDispensasi::create([
             'staff_id' => $staff->id,
             'validasi_admin' => null,
