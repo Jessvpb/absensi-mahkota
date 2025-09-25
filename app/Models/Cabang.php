@@ -12,7 +12,8 @@ class Cabang extends Model
         'alamat',
         'jam_masuk',
         'jam_pulang',
-        'is_active'
+        'is_active',
+        'max_off_per_day'
     ];
     public function staff()
     {
