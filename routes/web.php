@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\PengajuanDispensasiController;
 use App\Http\Controllers\SlipGajiController;
 use App\Http\Controllers\HutangController;
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\JadwalOffController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 
@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 Route::middleware(['auth', 'role:admin,kepala'])->group(function () {
     Route::get('/staff', [StaffController::class, 'view'])->name('staff.view');
     Route::get('/staff/addView', [StaffController::class, 'addView'])->name('staff.addView');
@@ -39,6 +40,7 @@ Route::middleware(['auth', 'role:admin,kepala'])->group(function () {
     Route::get('/pengajuan/kronologi', [PengajuanKronologiController::class, 'view'])->name('kronologi.view');
     Route::post('/pengajuan/kronologi/validasi/{id}', [PengajuanKronologiController::class, 'validasi'])->name('kronologi.validasi');
 });
+
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/staff/userForm/{id}', [StaffController::class, 'userForm'])->name('staff.userForm');
     Route::post('/staff/saveUser/{id}', [StaffController::class, 'saveUser'])->name('staff.saveUser');
@@ -58,10 +60,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/pengajuan/dispensasi', [PengajuanDispensasiController::class, 'view'])->name('pengajuandispensasi.view');
     Route::resource('hutang', HutangController::class);
 
-    // Route::get('/slip', [SlipGajiController::class, 'index'])->name('slip.index'); // daftar hasil penggajian
-    // Route::get('/slip/preview', [SlipGajiController::class, 'preview'])->name('slip.preview'); // form pilih bulan & cabang
-    // Route::post('/slip/jalankan', [SlipGajiController::class, 'jalankan'])->name('slip.jalankan'); // simpan ke db
-    // Route::get('/slip/{periode}/{cabang_id}', [SlipGajiController::class, 'detail'])->name('slip.periode.detail'); // lihat slip tiap periode
+    // Route::get('/slip', [SlipGajiController::class, 'index'])->name('slip.index');
+    // Route::get('/slip/preview', [SlipGajiController::class, 'preview'])->name('slip.preview');
+    // Route::post('/slip/jalankan', [SlipGajiController::class, 'jalankan'])->name('slip.jalankan');
+    // Route::get('/slip/{periode}/{cabang_id}', [SlipGajiController::class, 'detail'])->name('slip.periode.detail');
 });
 
 Route::middleware(['auth', 'role:admin,kepala,karyawan'])->group(function () {
@@ -71,13 +73,11 @@ Route::middleware(['auth', 'role:admin,kepala,karyawan'])->group(function () {
     Route::get('/pengajuan/izin/{id}', [PengajuanIzinController::class, 'detail'])->name('pengajuanizin.detail');
     Route::post('/pengajuan/izin/validasi/{id}', [PengajuanIzinController::class, 'validasi'])->name('pengajuanizin.validasi');
 
-    // Pengajuan Dispensasi (karyawan bisa ajukan, admin/kepala bisa validasi)
     Route::get('/pengajuan/dispensasi/addView', [PengajuanDispensasiController::class, 'addView'])->name('pengajuandispensasi.addView');
     Route::post('/pengajuan/dispensasi/add', [PengajuanDispensasiController::class, 'add'])->name('pengajuandispensasi.add');
     Route::get('/pengajuan/dispensasi/riwayat', [PengajuanDispensasiController::class, 'riwayat'])->middleware(['auth'])->name('pengajuandispensasi.riwayat');
     Route::get('/pengajuan/dispensasi/{id}', [PengajuanDispensasiController::class, 'detail'])->name('pengajuandispensasi.detail');
     Route::post('/pengajuan/dispensasi/validasi/{id}', [PengajuanDispensasiController::class, 'validasi'])->name('pengajuandispensasi.validasi');
-
 
     Route::get('/pengajuan/kronologi/addView', [PengajuanKronologiController::class, 'addView'])->name('kronologi.addView');
     Route::post('/pengajuan/kronologi/add', [PengajuanKronologiController::class, 'add'])->name('kronologi.add');
@@ -103,6 +103,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/resetpass', [DashboardController::class, 'showResetForm'])->name('reset.pw');
     Route::post('/resetpass', [DashboardController::class, 'updatePassword'])->name('reset.pass');
+
+    // 🔹 Tambahkan route jadwal off
+    Route::get('/jadwal-off', [JadwalOffController::class, 'index'])->name('jadwaloff.index');
 });
 
 Route::prefix('absen')->middleware('auth')->group(function () {
@@ -110,6 +113,7 @@ Route::prefix('absen')->middleware('auth')->group(function () {
     Route::get('/import', [AbsenController::class, 'importForm'])->name('absen.import.form');
     Route::post('/import', [AbsenController::class, 'importProses'])->name('absen.import.proses');
 });
+
 Route::get('/absen/riwayat', [AbsenController::class, 'riwayat'])->name('absen.riwayat')->middleware('auth');
 
 require __DIR__ . '/auth.php';

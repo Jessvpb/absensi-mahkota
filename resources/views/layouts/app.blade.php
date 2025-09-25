@@ -267,8 +267,8 @@
                         <p class="sidebar-text px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                             Jadwal Off Karyawan</p>
 
-                        <a href="{{ route('absen.index') }}"
-                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->is('absen.index') ? 'active' : '' }}">
+                        <a href="{{ route('jadwaloff.index') }}"
+                            class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->is('jadwaloff.index') ? 'active' : '' }}">
                             <i class="fas fa-calendar-alt w-5 text-center"></i>
                             <span class="sidebar-text ml-3">Data Jadwal Off</span>
                         </a>
