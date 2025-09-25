@@ -6,20 +6,32 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Staff;
 use App\Models\PengajuanIzin;
+use App\Models\Cabang; // <--- tambahkan ini
 
 class JadwalOffController extends Controller
 {
     public function index(Request $request)
     {
         $bulan = $request->query('bulan', now()->format('Y-m'));
+        $cabangId = $request->query('cabang_id'); // dari filter
+
         $tanggalAwal = Carbon::parse($bulan . '-01');
         $tanggalAkhir = $tanggalAwal->copy()->endOfMonth();
         $jumlahHari = $tanggalAkhir->day;
 
-        // Ambil semua staff
-        $staffList = Staff::with('staffCabang')->get();
+        // Ambil semua cabang untuk filter
+        $cabangList = Cabang::all();
 
-        // Ambil semua pengajuan izin (khusus O = Off) dalam bulan ini
+        // Ambil staff, bisa filter berdasarkan cabang
+        $staffQuery = Staff::with('staffCabang');
+        if ($cabangId) {
+            $staffQuery->whereHas('staffCabang', function($q) use ($cabangId) {
+                $q->where('cabang_id', $cabangId);
+            });
+        }
+        $staffList = $staffQuery->get();
+
+        // Ambil pengajuan izin khusus O = Off dalam bulan ini
         $pengajuan = PengajuanIzin::with('detail_pengajuan_izin')
             ->whereHas('detail_pengajuan_izin', function($q) use ($tanggalAwal, $tanggalAkhir) {
                 $q->whereBetween('tanggal', [$tanggalAwal, $tanggalAkhir])
@@ -45,6 +57,7 @@ class JadwalOffController extends Controller
             }
         }
 
-        return view('jadwaloff.index', compact('bulan','jumlahHari','staffList','jadwalOff'));
+        // Kirim semua variabel ke view
+        return view('jadwaloff.index', compact('bulan','jumlahHari','staffList','jadwalOff','cabangList','cabangId'));
     }
 }
