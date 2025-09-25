@@ -105,27 +105,29 @@
                 </div>
 
                 <!-- Legend -->
-                <div
-                    class="mt-6 p-6 bg-gray-800/30 rounded-lg border border-gray-700/50 grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div class="flex items-center space-x-2">
-                        <span
-                            class="inline-flex w-8 h-8 rounded-full bg-red-500/20 text-red-400 border border-red-500/40 items-center justify-center font-bold">O</span>
-                        <span class="text-white text-sm">Off - Menunggu</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span
-                            class="inline-flex w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/40 items-center justify-center font-bold">O</span>
-                        <span class="text-white text-sm">Off - Disetujui Kepala Cabang</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span
-                            class="inline-flex w-8 h-8 rounded-full bg-green-500/20 text-green-400 border border-green-500/40 items-center justify-center font-bold">O</span>
-                        <span class="text-white text-sm">Off - Disetujui Kepala & Admin</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span
-                            class="inline-flex w-8 h-8 rounded-full bg-gray-500/20 text-gray-400 border border-gray-500/30 items-center justify-center font-bold">-</span>
-                        <span class="text-white text-sm">Tidak Ada Data</span>
+                <div class="mt-6 p-4 bg-gray-800/30 rounded-lg border border-gray-700/50">
+                    <h4 class="text-lg font-semibold text-white mb-4">📖 Keterangan Status</h4>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center space-x-2">
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/40">O</span>
+                            <span class="text-white text-sm">Off - Menunggu</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/40">O</span>
+                            <span class="text-white text-sm">Off - Disetujui Kepala Cabang</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/40">O</span>
+                            <span class="text-white text-sm">Off - Disetujui Kepala & Admin</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
+                            <span class="text-white text-sm">Tidak Ada Data</span>
+                        </div>
                     </div>
                 </div>
             @else
