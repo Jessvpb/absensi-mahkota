@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Staff;
 use App\Models\PengajuanIzin;
-use App\Models\Cabang; // <--- tambahkan ini
+use App\Models\Cabang;
 
 class JadwalOffController extends Controller
 {
@@ -30,6 +30,14 @@ class JadwalOffController extends Controller
             });
         }
         $staffList = $staffQuery->get();
+
+        // Kelompokkan staff per cabang
+        $staffPerCabang = [];
+        foreach ($cabangList as $cabang) {
+            $staffPerCabang[$cabang->id] = $staffList->filter(function($staff) use ($cabang) {
+                return $staff->staffCabang->contains('cabang_id', $cabang->id);
+            })->values(); // reset keys
+        }
 
         // Ambil pengajuan izin khusus O = Off dalam bulan ini
         $pengajuan = PengajuanIzin::with('detail_pengajuan_izin')
@@ -58,6 +66,6 @@ class JadwalOffController extends Controller
         }
 
         // Kirim semua variabel ke view
-        return view('jadwaloff.index', compact('bulan','jumlahHari','staffList','jadwalOff','cabangList','cabangId'));
+        return view('jadwaloff.index', compact('bulan','jumlahHari','staffPerCabang','jadwalOff','cabangList','cabangId'));
     }
 }

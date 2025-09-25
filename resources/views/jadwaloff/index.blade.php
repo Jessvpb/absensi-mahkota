@@ -48,7 +48,7 @@
         <!-- Jadwal Off Table per Cabang -->
         @foreach ($cabangList as $cabang)
             @php
-                $staffCabang = $staffList->where('cabang_id', $cabang->id);
+                $staffCabang = $staffPerCabang[$cabang->id];
             @endphp
 
             @if ($staffCabang->count() > 0)
