@@ -45,6 +45,6 @@ class JadwalOffController extends Controller
             }
         }
 
-        return view('jadwal_off.index', compact('bulan','jumlahHari','staffList','jadwalOff'));
+        return view('jadwaloff.index', compact('bulan','jumlahHari','staffList','jadwalOff'));
     }
 }
