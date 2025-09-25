@@ -246,32 +246,92 @@
         </div>
 
         {{-- Tabel Rekap Kehadiran Karyawan --}}
-        @if (count($staffList) > 0)
-            <div class="glass-card rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-white mb-6">📊 Tabel Rekap Kehadiran Karyawan</h3>
+        <div class="glass-card rounded-2xl p-8">
+            <h3 class="text-2xl font-bold text-white mb-6">📊 Rekap Kehadiran Karyawan</h3>
+
+            @if (count($staffList) > 0)
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <tr
-                            class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
-                            <td>Nama Karyawan
-                            <td class="text-center">Normal</td>
-                            <td class="text-center">Off</td>
-                            <td class="text-center">Terlambat</td>
-                            <td class="text-center">Izin</td>
-                            <td class="text-center">Sakit</td>
-                            <td class="text-center">Alpha</td>
-                            <td class="text-center">Dispensasi</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">{{ $staff->nama }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['H'] ?? 0 }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['O'] ?? 0 }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['T'] ?? 0 }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['I'] ?? 0 }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['S'] ?? 0 }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['A'] ?? 0 }}</td>
-                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['D'] ?? 0 }}</td>
-                        </tr>
+                        <thead class="bg-gray-800/30 rounded-lg">
+                            <tr>
+                                <th
+                                    class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[200px] rounded-l-lg">
+                                    Nama Karyawan
+                                </th>
+                                <th
+                                    class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[120px]">
+                                    ID Karyawan
+                                </th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Hadir</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Off</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Terlambat</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Izin</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Sakit</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Alpha</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Dispensasi</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Cuti</th>
+                            </tr>
+                        </thead>
+                        <tbody class="space-y-2">
+                            @foreach ($staffList as $staff)
+                                @php
+                                    $rekap = [
+                                        'H' => 0,
+                                        'O' => 0,
+                                        'T' => 0,
+                                        'I' => 0,
+                                        'S' => 0,
+                                        'A' => 0,
+                                        'D' => 0,
+                                        'C' => 0,
+                                    ];
+
+                                    if (isset($absenData[$staff->id])) {
+                                        foreach ($absenData[$staff->id] as $hari => $records) {
+                                            $status = $records[0]->status ?? null;
+                                            if ($status && isset($rekap[$status])) {
+                                                $rekap[$status]++;
+                                            }
+                                        }
+                                    }
+                                @endphp
+                                <tr
+                                    class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
+                                    <td
+                                        class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg text-white font-medium">
+                                        {{ $staff->nama }}
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 text-gray-400">
+                                        {{ $staff->absen_id }}
+                                    </td>
+                                    <td class="px-3 py-4 text-center text-green-400 font-semibold">{{ $rekap['H'] }}
+                                    </td>
+                                    <td class="px-3 py-4 text-center text-gray-400">{{ $rekap['O'] }}</td>
+                                    <td class="px-3 py-4 text-center text-purple-400">{{ $rekap['T'] }}</td>
+                                    <td class="px-3 py-4 text-center text-blue-400">{{ $rekap['I'] }}</td>
+                                    <td class="px-3 py-4 text-center text-yellow-400">{{ $rekap['S'] }}</td>
+                                    <td class="px-3 py-4 text-center text-red-400">{{ $rekap['A'] }}</td>
+                                    <td class="px-3 py-4 text-center text-orange-400">{{ $rekap['D'] }}</td>
+                                    <td class="px-3 py-4 text-center text-pink-400">{{ $rekap['C'] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             @else
@@ -287,8 +347,8 @@
                         Import Data Absen
                     </a>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
     <style>
