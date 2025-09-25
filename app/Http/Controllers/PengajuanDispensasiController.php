@@ -50,27 +50,27 @@ class PengajuanDispensasiController extends Controller
 
         $staff = Staff::where('users_id', Auth::id())->firstOrFail();
 
-        // Ambil semua tanggal pengajuan dan ubah ke Carbon
-        $tanggalList = array_map(fn($item) => Carbon::parse($item['tanggal']), $request->detail);
+        // // Ambil semua tanggal pengajuan dan ubah ke Carbon
+        // $tanggalList = array_map(fn($item) => Carbon::parse($item['tanggal']), $request->detail);
 
-        // 1. Cek semua tanggal harus di bulan yang sama
-        $bulanPertama = $tanggalList[0]->month;
-        $bulanSama = collect($tanggalList)->every(fn($tgl) => $tgl->month === $bulanPertama);
-        if (!$bulanSama) {
-            return back()->withErrors([
-                'detail' => "Semua tanggal pengajuan dispensasi harus berada di bulan yang sama."
-            ])->withInput();
-        }
+        // // 1. Cek semua tanggal harus di bulan yang sama
+        // $bulanPertama = $tanggalList[0]->month;
+        // $bulanSama = collect($tanggalList)->every(fn($tgl) => $tgl->month === $bulanPertama);
+        // if (!$bulanSama) {
+        //     return back()->withErrors([
+        //         'detail' => "Semua tanggal pengajuan dispensasi harus berada di bulan yang sama."
+        //     ])->withInput();
+        // }
 
-        // 2. Cek selisih maksimum 14 hari
-        $minTanggal = min($tanggalList);
-        $maxTanggal = max($tanggalList);
-        $selisihHari = $minTanggal->diffInDays($maxTanggal) + 1;
-        if ($selisihHari > 14) {
-            return back()->withErrors([
-                'detail' => "Pengajuan dispensasi tidak boleh lebih dari 14 hari (saat ini $selisihHari hari)."
-            ])->withInput();
-        }
+        // // 2. Cek selisih maksimum 14 hari
+        // $minTanggal = min($tanggalList);
+        // $maxTanggal = max($tanggalList);
+        // $selisihHari = $minTanggal->diffInDays($maxTanggal) + 1;
+        // if ($selisihHari > 14) {
+        //     return back()->withErrors([
+        //         'detail' => "Pengajuan dispensasi tidak boleh lebih dari 14 hari (saat ini $selisihHari hari)."
+        //     ])->withInput();
+        // }
 
         // Jika lolos pengecekan, buat pengajuan
         $pengajuan = PengajuanDispensasi::create([

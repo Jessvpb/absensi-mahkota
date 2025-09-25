@@ -59,27 +59,27 @@ class PengajuanIzinController extends Controller
         $cabangId = $cabang->id;
         $maxOff = $cabang->max_off_per_day ?? 999; // batas off per hari dari cabang
 
-        // Ambil semua tanggal pengajuan
-        $tanggalList = array_map(fn($item) => Carbon::parse($item['tanggal']), $request->detail);
+        // // Ambil semua tanggal pengajuan
+        // $tanggalList = array_map(fn($item) => Carbon::parse($item['tanggal']), $request->detail);
 
-        // 1. Cek semua tanggal harus di bulan yang sama
-        $bulanPertama = $tanggalList[0]->month;
-        $bulanSama = collect($tanggalList)->every(fn($tgl) => $tgl->month === $bulanPertama);
-        if (!$bulanSama) {
-            return back()->withErrors([
-                'detail' => "Semua tanggal pengajuan harus berada di bulan yang sama."
-            ])->withInput();
-        }
+        // // 1. Cek semua tanggal harus di bulan yang sama
+        // $bulanPertama = $tanggalList[0]->month;
+        // $bulanSama = collect($tanggalList)->every(fn($tgl) => $tgl->month === $bulanPertama);
+        // if (!$bulanSama) {
+        //     return back()->withErrors([
+        //         'detail' => "Semua tanggal pengajuan harus berada di bulan yang sama."
+        //     ])->withInput();
+        // }
 
-        // 2. Cek selisih maksimum 14 hari
-        $minTanggal = min($tanggalList);
-        $maxTanggal = max($tanggalList);
-        $selisihHari = $minTanggal->diffInDays($maxTanggal) + 1;
-        if ($selisihHari > 14) {
-            return back()->withErrors([
-                'detail' => "Pengajuan tidak boleh lebih dari 14 hari (saat ini $selisihHari hari)."
-            ])->withInput();
-        }
+        // // 2. Cek selisih maksimum 14 hari
+        // $minTanggal = min($tanggalList);
+        // $maxTanggal = max($tanggalList);
+        // $selisihHari = $minTanggal->diffInDays($maxTanggal) + 1;
+        // if ($selisihHari > 14) {
+        //     return back()->withErrors([
+        //         'detail' => "Pengajuan tidak boleh lebih dari 14 hari (saat ini $selisihHari hari)."
+        //     ])->withInput();
+        // }
 
         // cek setiap tanggal jika status 'O'
         foreach ($request->detail as $item) {
