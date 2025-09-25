@@ -256,11 +256,7 @@
                             <tr>
                                 <th
                                     class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[200px] rounded-l-lg">
-                                    Nama Karyawan
-                                </th>
-                                <th
-                                    class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[120px]">
-                                    ID Karyawan
+                                    Karyawan
                                 </th>
                                 <th
                                     class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -313,12 +309,17 @@
                                 @endphp
                                 <tr
                                     class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
-                                    <td
-                                        class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg text-white font-medium">
-                                        {{ $staff->nama }}
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 text-gray-400">
-                                        {{ $staff->absen_id }}
+                                    <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
+                                                <i class="fas fa-user text-blue-400"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-white">{{ $staff->nama }}</div>
+                                                <div class="text-xs text-gray-400">ID: {{ $staff->absen_id }}</div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="px-3 py-4 text-center text-green-400 font-semibold">{{ $rekap['H'] }}
                                     </td>
