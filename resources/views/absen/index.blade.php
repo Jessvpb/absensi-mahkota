@@ -191,175 +191,184 @@
                 <!-- Legend -->
                 <div class="mt-8 p-6 bg-gray-800/30 rounded-lg border border-gray-700/50">
                     <h4 class="text-lg font-semibold text-white mb-4">📖 Keterangan Status</h4>
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                        <!-- Baris 1 -->
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30">H</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-green-500/20 text-green-400 border border-green-500/30">H</span>
                             <span class="text-white text-sm">Hadir</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">S</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">S</span>
                             <span class="text-white text-sm">Sakit</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">I</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-blue-500/20 text-blue-400 border border-blue-500/30">I</span>
                             <span class="text-white text-sm">Izin</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">A</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-red-500/20 text-red-400 border border-red-500/30">A</span>
                             <span class="text-white text-sm">Alpha</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">T</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-purple-500/20 text-purple-400 border border-purple-500/30">T</span>
                             <span class="text-white text-sm">Terlambat</span>
                         </div>
+
+                        <!-- Baris 2 -->
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-orange-500/20 text-orange-400 border border-orange-500/30">D</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-orange-500/20 text-orange-400 border border-orange-500/30">D</span>
                             <span class="text-white text-sm">Dispensasi</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30">E</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-pink-500/20 text-pink-400 border border-pink-500/30">E</span>
                             <span class="text-white text-sm">Early Leave</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">L</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">L</span>
                             <span class="text-white text-sm">Late & Early Leave</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
-                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
+                         bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
                             <span class="text-white text-sm">Tidak Ada Data</span>
                         </div>
                     </div>
                 </div>
-            @else
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-2xl text-yellow-400"></i>
-                    </div>
-                    <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
-                    <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
-                    <a href="{{ route('absen.import.form') }}"
-                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
-                        <i class="fas fa-upload mr-2"></i>
-                        Import Data Absen
-                    </a>
-                </div>
-            @endif
+                <span
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
+                <span class="text-white text-sm">Tidak Ada Data</span>
         </div>
+    </div>
+@else
+    <div class="text-center py-12">
+        <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-users text-2xl text-yellow-400"></i>
+        </div>
+        <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
+        <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
+        <a href="{{ route('absen.import.form') }}"
+            class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
+            <i class="fas fa-upload mr-2"></i>
+            Import Data Absen
+        </a>
+    </div>
+    @endif
+    </div>
 
-        {{-- Tabel Rekap Kehadiran Karyawan --}}
-        <div class="glass-card rounded-2xl p-8">
-            <h3 class="text-2xl font-bold text-white mb-6">📊 Rekap Kehadiran Karyawan</h3>
+    {{-- Tabel Rekap Kehadiran Karyawan --}}
+    <div class="glass-card rounded-2xl p-8">
+        <h3 class="text-2xl font-bold text-white mb-6">📊 Rekap Kehadiran Karyawan</h3>
 
-            @if (count($staffList) > 0)
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-800/30 rounded-lg">
-                            <tr>
-                                <th
-                                    class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[200px] rounded-l-lg">
-                                    Karyawan
-                                </th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Normal</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Off</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Terlambat</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Izin</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Sakit</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Alpha</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Dispensasi</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Cuti</th>
-                            </tr>
-                        </thead>
-                        <tbody class="space-y-2">
-                            @foreach ($staffList as $staff)
-                                @php
-                                    $rekap = [
-                                        'H' => 0,
-                                        'O' => 0,
-                                        'T' => 0,
-                                        'I' => 0,
-                                        'S' => 0,
-                                        'A' => 0,
-                                        'D' => 0,
-                                        'C' => 0,
-                                    ];
+        @if (count($staffList) > 0)
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-800/30 rounded-lg">
+                        <tr>
+                            <th
+                                class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[200px] rounded-l-lg">
+                                Karyawan
+                            </th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Normal</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Off</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Terlambat</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Izin</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Sakit</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Alpha</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Dispensasi</th>
+                            <th class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                Cuti</th>
+                        </tr>
+                    </thead>
+                    <tbody class="space-y-2">
+                        @foreach ($staffList as $staff)
+                            @php
+                                $rekap = [
+                                    'H' => 0,
+                                    'O' => 0,
+                                    'T' => 0,
+                                    'I' => 0,
+                                    'S' => 0,
+                                    'A' => 0,
+                                    'D' => 0,
+                                    'C' => 0,
+                                ];
 
-                                    if (isset($absenData[$staff->id])) {
-                                        foreach ($absenData[$staff->id] as $hari => $records) {
-                                            $status = $records[0]->status ?? null;
-                                            if ($status && isset($rekap[$status])) {
-                                                $rekap[$status]++;
-                                            }
+                                if (isset($absenData[$staff->id])) {
+                                    foreach ($absenData[$staff->id] as $hari => $records) {
+                                        $status = $records[0]->status ?? null;
+                                        if ($status && isset($rekap[$status])) {
+                                            $rekap[$status]++;
                                         }
                                     }
-                                @endphp
-                                <tr
-                                    class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
-                                    <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg">
-                                        <div class="flex items-center">
-                                            <div
-                                                class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
-                                                <i class="fas fa-user text-blue-400"></i>
-                                            </div>
-                                            <div>
-                                                <div class="text-sm font-medium text-white">{{ $staff->nama }}</div>
-                                                <div class="text-xs text-gray-400">ID: {{ $staff->absen_id }}</div>
-                                            </div>
+                                }
+                            @endphp
+                            <tr
+                                class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
+                                <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg">
+                                    <div class="flex items-center">
+                                        <div
+                                            class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
+                                            <i class="fas fa-user text-blue-400"></i>
                                         </div>
-                                    </td>
-                                    <td class="px-3 py-4 text-center text-green-400 font-semibold">{{ $rekap['H'] }}
-                                    </td>
-                                    <td class="px-3 py-4 text-center text-gray-400">{{ $rekap['O'] }}</td>
-                                    <td class="px-3 py-4 text-center text-purple-400">{{ $rekap['T'] }}</td>
-                                    <td class="px-3 py-4 text-center text-blue-400">{{ $rekap['I'] }}</td>
-                                    <td class="px-3 py-4 text-center text-yellow-400">{{ $rekap['S'] }}</td>
-                                    <td class="px-3 py-4 text-center text-red-400">{{ $rekap['A'] }}</td>
-                                    <td class="px-3 py-4 text-center text-orange-400">{{ $rekap['D'] }}</td>
-                                    <td class="px-3 py-4 text-center text-pink-400">{{ $rekap['C'] }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        <div>
+                                            <div class="text-sm font-medium text-white">{{ $staff->nama }}</div>
+                                            <div class="text-xs text-gray-400">ID: {{ $staff->absen_id }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-4 text-center text-green-400 font-semibold">{{ $rekap['H'] }}
+                                </td>
+                                <td class="px-3 py-4 text-center text-gray-400">{{ $rekap['O'] }}</td>
+                                <td class="px-3 py-4 text-center text-purple-400">{{ $rekap['T'] }}</td>
+                                <td class="px-3 py-4 text-center text-blue-400">{{ $rekap['I'] }}</td>
+                                <td class="px-3 py-4 text-center text-yellow-400">{{ $rekap['S'] }}</td>
+                                <td class="px-3 py-4 text-center text-red-400">{{ $rekap['A'] }}</td>
+                                <td class="px-3 py-4 text-center text-orange-400">{{ $rekap['D'] }}</td>
+                                <td class="px-3 py-4 text-center text-pink-400">{{ $rekap['C'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="text-center py-12">
+                <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-users text-2xl text-yellow-400"></i>
                 </div>
-            @else
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-2xl text-yellow-400"></i>
-                    </div>
-                    <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
-                    <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
-                    <a href="{{ route('absen.import.form') }}"
-                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
-                        <i class="fas fa-upload mr-2"></i>
-                        Import Data Absen
-                    </a>
-                </div>
-            @endif
-        </div>
+                <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
+                <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
+                <a href="{{ route('absen.import.form') }}"
+                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
+                    <i class="fas fa-upload mr-2"></i>
+                    Import Data Absen
+                </a>
+            </div>
+        @endif
+    </div>
     </div>
 
     <style>
