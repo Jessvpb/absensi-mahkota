@@ -260,7 +260,7 @@
                                 </th>
                                 <th
                                     class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Hadir</th>
+                                    Normal</th>
                                 <th
                                     class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
                                     Off</th>
