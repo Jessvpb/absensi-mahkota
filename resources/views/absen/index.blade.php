@@ -246,47 +246,48 @@
         </div>
 
         {{-- Tabel Rekap Kehadiran Karyawan --}}
-        <div class="glass-card rounded-2xl p-8">
-            <h3 class="text-2xl font-bold text-white mb-6">📊 Tabel Rekap Kehadiran Karyawan</h3>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <tr
-                        class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
-                        <td>Nama Karyawan
-                        <td class="text-center">Normal</td>
-                        <td class="text-center">Off</td>
-                        <td class="text-center">Terlambat</td>
-                        <td class="text-center">Izin</td>
-                        <td class="text-center">Sakit</td>
-                        <td class="text-center">Alpha</td>
-                        <td class="text-center">Dispensasi</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">{{ $staff->nama }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['H'] ?? 0 }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['O'] ?? 0 }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['T'] ?? 0 }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['I'] ?? 0 }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['S'] ?? 0 }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['A'] ?? 0 }}</td>
-                        <td class="text-center">{{ $rekapKehadiran[$staff->id]['D'] ?? 0 }}</td>
-                    </tr>
-                </table>
-            </div>
-        @else
-            <div class="text-center py-12">
-                <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-users text-2xl text-yellow-400"></i>
+        @if (count($staffList) > 0)
+            <div class="glass-card rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-6">📊 Tabel Rekap Kehadiran Karyawan</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <tr
+                            class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
+                            <td>Nama Karyawan
+                            <td class="text-center">Normal</td>
+                            <td class="text-center">Off</td>
+                            <td class="text-center">Terlambat</td>
+                            <td class="text-center">Izin</td>
+                            <td class="text-center">Sakit</td>
+                            <td class="text-center">Alpha</td>
+                            <td class="text-center">Dispensasi</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">{{ $staff->nama }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['H'] ?? 0 }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['O'] ?? 0 }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['T'] ?? 0 }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['I'] ?? 0 }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['S'] ?? 0 }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['A'] ?? 0 }}</td>
+                            <td class="text-center">{{ $rekapKehadiran[$staff->id]['D'] ?? 0 }}</td>
+                        </tr>
+                    </table>
                 </div>
-                <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
-                <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
-                <a href="{{ route('absen.import.form') }}"
-                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
-                    <i class="fas fa-upload mr-2"></i>
-                    Import Data Absen
-                </a>
+            @else
+                <div class="text-center py-12">
+                    <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-2xl text-yellow-400"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
+                    <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
+                    <a href="{{ route('absen.import.form') }}"
+                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
+                        <i class="fas fa-upload mr-2"></i>
+                        Import Data Absen
+                    </a>
+                </div>
             </div>
-        </div>
         @endif
     </div>
 
