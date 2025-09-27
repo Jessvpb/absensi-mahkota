@@ -52,12 +52,6 @@
 
                     <div class="detail-row bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                            <div class="md:col-span-3">
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
-                                <input type="date" name="detail[0][tanggal]"
-                                    class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                    required>
-                            </div>
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Status</label>
                                 <select name="detail[0][status]"
@@ -69,6 +63,12 @@
                                     <option value="C">🏖️ Cuti</option>
                                     <option value="O">📅 Off</option>
                                 </select>
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
+                                <input type="date" name="detail[0][tanggal]"
+                                    class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                    required>
                             </div>
                             <div class="md:col-span-3">
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Keterangan</label>
@@ -221,11 +221,6 @@
                 row.innerHTML = `
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                 <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
-                    <input type="date" name="detail[${index}][tanggal]"
-                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
-                </div>
-                <div class="md:col-span-3">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Status</label>
                     <select name="detail[${index}][status]"
                             class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
@@ -236,11 +231,22 @@
                         <option value="O">📅 Off</option>
                     </select>
                 </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
+                    <input type="date" name="detail[${index}][tanggal]"
+                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
+                </div>
                 <div class="md:col-span-5">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Keterangan</label>
                     <input type="text" name="detail[${index}][keterangan]"
                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
                            placeholder="Masukkan keterangan (opsional)">
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Pengganti</label>
+                    <input type="text" name="detail[0][pengganti]"
+                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                           placeholder="Masukkan nama pengganti (opsional)">
                 </div>
                 <div class="md:col-span-1">
                     <button type="button" class="w-full px-3 py-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-colors duration-200 border border-red-500/30 btn-remove">
