@@ -236,7 +236,7 @@
                     <input type="date" name="detail[${index}][tanggal]"
                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
                 </div>
-                <div class="md:col-span-5">
+                <div class="md:col-span-3">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Keterangan</label>
                     <input type="text" name="detail[${index}][keterangan]"
                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
