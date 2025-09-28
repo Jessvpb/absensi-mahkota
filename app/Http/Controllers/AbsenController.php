@@ -74,10 +74,7 @@ class AbsenController extends Controller
 
         $bulan = $request->bulan;
         $tanggalBase = Carbon::parse($bulan . '-01');
-        $tanggalAwal = $tanggalBase->copy()->startOfMonth();
-        $tanggalAkhir = $tanggalBase->copy()->endOfMonth();
 
-        // 1️⃣ Import dari Excel seperti biasa
         foreach ($data as $row) {
             $absenId = $row[2];
             if (!$absenId) continue;
@@ -90,18 +87,28 @@ class AbsenController extends Controller
             if (!$cabangId) continue;
 
             for ($i = 4; $i <= 34; $i++) {
-                $statusIsi = $row[$i] ?? null;
-                if (!$statusIsi || !isset($mapStatus[$statusIsi])) continue;
-
-                $status = $mapStatus[$statusIsi];
                 $tglIndex = $i - 4;
                 $tanggal = $tanggalBase->copy()->addDays($tglIndex)->toDateString();
+                $statusIsi = $row[$i] ?? null;
+
+                // Cek hari Minggu otomatis H untuk cabang 1 jika kosong di Excel
+                if ((!$statusIsi || !isset($mapStatus[$statusIsi])) && $cabangId == 1 && Carbon::parse($tanggal)->isSunday()) {
+                    $status = 'H';
+                    $keterangan = 'Hari Minggu otomatis hadir';
+                } 
+                // Status dari Excel
+                elseif ($statusIsi && isset($mapStatus[$statusIsi])) {
+                    $status = $mapStatus[$statusIsi];
+                    $keterangan = null;
+                } 
+                else {
+                    continue; // tidak ada data, skip
+                }
 
                 // Skip jika absen sudah ada
                 $sudahAda = Absen::where('staff_id', $staff->id)
                     ->whereDate('tanggal', $tanggal)
                     ->exists();
-
                 if ($sudahAda) continue;
 
                 Absen::create([
@@ -109,38 +116,14 @@ class AbsenController extends Controller
                     'cabang_id' => $cabangId,
                     'tanggal' => $tanggal,
                     'status' => $status,
-                    'keterangan' => null,
+                    'keterangan' => $keterangan,
                 ]);
             }
         }
 
-        // 2️⃣ Tambahkan hari Minggu otomatis H untuk cabang id 1
-        $staffCabang1 = Staff::whereHas('staffCabang', function($q){
-            $q->where('cabang_id', 1);
-        })->get();
-
-        foreach ($staffCabang1 as $staff) {
-            for ($d = $tanggalAwal->copy(); $d->lte($tanggalAkhir); $d->addDay()) {
-                if ($d->isSunday()) {
-                    $exists = Absen::where('staff_id', $staff->id)
-                        ->whereDate('tanggal', $d->toDateString())
-                        ->exists();
-
-                    if (!$exists) {
-                        Absen::create([
-                            'staff_id' => $staff->id,
-                            'cabang_id' => 1,
-                            'tanggal' => $d->toDateString(),
-                            'status' => 'H', // otomatis hadir
-                            'keterangan' => 'Hari Minggu otomatis hadir',
-                        ]);
-                    }
-                }
-            }
-        }
-
-        return redirect()->route('absen.index')->with('success', 'Data absen berhasil diimpor dan hari Minggu cabang 1 otomatis hadir.');
+        return redirect()->route('absen.index')->with('success', 'Data absen berhasil diimpor, hari Minggu cabang 1 otomatis hadir jika kosong.');
     }
+
 
     public function riwayat(Request $request)
     {
