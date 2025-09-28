@@ -402,6 +402,9 @@
                                 <th
                                     class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
                                     Cuti</th>
+                                <th
+                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                    Total Kehadiran</th>
                             </tr>
                         </thead>
                         <tbody class="space-y-2">
@@ -426,6 +429,8 @@
                                             }
                                         }
                                     }
+                                    $totalKehadiran =
+                                        $rekap['H'] + $rekap['L'] + $rekap['T'] + $rekap['E'] + $rekap['D'];
                                 @endphp
                                 <tr
                                     class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
@@ -450,6 +455,7 @@
                                     <td class="px-3 py-4 text-center text-red-400">{{ $rekap['A'] }}</td>
                                     <td class="px-3 py-4 text-center text-orange-400">{{ $rekap['D'] }}</td>
                                     <td class="px-3 py-4 text-center text-pink-400">{{ $rekap['C'] }}</td>
+                                    <td class="px-3 py-4 text-center text-white font-bold">{{ $totalKehadiran }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
