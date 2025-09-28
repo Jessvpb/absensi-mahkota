@@ -309,17 +309,17 @@
                                 x-text="statusFull[data.status] ?? data.status"></span>
                         </p>
                         <p class="flex justify-between">
-                            <span class="text-gray-400">Tanggal Pengajuan:</span>
+                            <span class="text-gray-400">Tanggal:</span>
                             <span class="font-semibold text-white"
-                                x-text="data.created_at ? new Date(data.created_at).toLocaleString('id-ID') : '-'"></span>
+                                x-text="data.tanggal ? new Date(data.tanggal).toLocaleString('id-ID') : '-'"></span>
                         </p>
                         <p class="flex justify-between">
                             <span class="text-gray-400">Keterangan:</span>
                             <span class="font-semibold text-white" x-text="data.keterangan"></span>
                         </p>
                         <p class="flex justify-between">
-                            <span class="text-gray-400">Divalidasi Oleh:</span>
-                            <span class="font-semibold text-white" x-text="data.admin?.name ?? '-'"></span>
+                            <span class="text-gray-400">Pengganti:</span>
+                            <span class="font-semibold text-white" x-text="data.pengganti ?? '-'"></span>
                         </p>
                     </div>
 
