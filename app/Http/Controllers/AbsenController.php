@@ -99,6 +99,7 @@ class AbsenController extends Controller
                     $status = $mapStatus[$statusIsi];
                 }
 
+                // Hari Minggu cabang 1 otomatis hadir jika kosong atau Alpha
                 if ($cabangId == 1 && Carbon::parse($tanggal)->isSunday()) {
                     $status = 'H';
                     $keterangan = 'Hari Minggu otomatis hadir';
