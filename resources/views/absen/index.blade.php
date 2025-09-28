@@ -292,222 +292,253 @@
             <!-- Modal -->
             <div x-show="isOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                 x-transition>
-                <div class="bg-white rounded-xl shadow-lg w-96 p-6 relative">
-                    <button @click="close" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">✕</button>
-                    <h2 class="text-lg font-bold mb-4">Detail Absensi</h2>
-                    <div class="space-y-2">
-                        <p><strong>Nama:</strong> <span x-text="data.staff"></span></p>
-                        <p><strong>Status:</strong> <span x-text="data.status"></span></p>
-                        <p><strong>Tanggal:</strong> <span x-text="data.tanggal"></span></p>
-                        <p><strong>Keterangan:</strong> <span x-text="data.keterangan"></span></p>
+                <div class="glass-card rounded-2xl shadow-xl w-96 p-6 relative border border-gray-700">
+                    <button @click="close"
+                        class="absolute top-3 right-3 text-gray-400 hover:text-white transition">✕</button>
+
+                    <h2 class="text-xl font-bold text-white mb-6">📋 Detail Absensi</h2>
+
+                    <div class="space-y-4 text-sm">
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Nama:</span>
+                            <span class="font-semibold text-white" x-text="data.staff"></span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Status:</span>
+                            <span class="font-semibold text-yellow-400"
+                                x-text="statusFull[data.status] ?? data.status"></span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Tanggal:</span>
+                            <span class="font-semibold text-white"
+                                x-text="data.tanggal ? new Date(data.tanggal).toLocaleString('id-ID') : '-'"></span>
+                        </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Keterangan:</span>
+                            <span class="font-semibold text-white" x-text="data.keterangan"></span>
+                        </p>
                     </div>
-                    <div class="mt-4 flex justify-end">
+
+                    <div class="mt-6 flex justify-end">
                         <button @click="close"
-                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Tutup</button>
+                            class="px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300">
+                            Tutup
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tambahkan Alpine.js -->
-        <script src="https://unpkg.com/alpinejs" defer></script>
-        <script>
-            function modalHandler() {
-                return {
-                    isOpen: false,
-                    data: {},
-                    openModal(absen) {
-                        this.data = absen;
-                        this.isOpen = true;
-                    },
-                    close() {
-                        this.isOpen = false;
-                        this.data = {};
+            <script>
+                function modalHandler() {
+                    return {
+                        isOpen: false,
+                        data: {},
+                        statusFull: {
+                            'H': 'Hadir',
+                            'S': 'Sakit',
+                            'I': 'Izin',
+                            'A': 'Alpha',
+                            'T': 'Terlambat',
+                            'D': 'Dispensasi',
+                            'E': 'Early Leave',
+                            'L': 'Late & Early Leave',
+                            'C': 'Cuti',
+                            'O': 'Off'
+                        },
+                        openModal(absen) {
+                            this.data = absen;
+                            this.isOpen = true;
+                        },
+                        close() {
+                            this.isOpen = false;
+                            this.data = {};
+                        }
                     }
                 }
-            }
-        </script>
+            </script>
 
 
-        {{-- Tabel Rekap Kehadiran Karyawan --}}
-        <div class="glass-card rounded-2xl p-8">
-            <h3 class="text-2xl font-bold text-white mb-6">📊 Rekap Kehadiran Karyawan</h3>
 
-            @if (count($staffList) > 0)
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-800/30 rounded-lg">
-                            <tr>
-                                <th
-                                    class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[200px] rounded-l-lg">
-                                    Karyawan
-                                </th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Normal</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Off</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Terlambat</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Izin</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Sakit</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Alpha</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Dispensasi</th>
-                                <th
-                                    class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    Cuti</th>
-                            </tr>
-                        </thead>
-                        <tbody class="space-y-2">
-                            @foreach ($staffList as $staff)
-                                @php
-                                    $rekap = [
-                                        'H' => 0,
-                                        'O' => 0,
-                                        'T' => 0,
-                                        'I' => 0,
-                                        'S' => 0,
-                                        'A' => 0,
-                                        'D' => 0,
-                                        'C' => 0,
-                                    ];
+            {{-- Tabel Rekap Kehadiran Karyawan --}}
+            <div class="glass-card rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-white mb-6">📊 Rekap Kehadiran Karyawan</h3>
 
-                                    if (isset($absenData[$staff->id])) {
-                                        foreach ($absenData[$staff->id] as $hari => $records) {
-                                            $status = $records[0]->status ?? null;
-                                            if ($status && isset($rekap[$status])) {
-                                                $rekap[$status]++;
+                @if (count($staffList) > 0)
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-800/30 rounded-lg">
+                                <tr>
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-800 min-w-[200px] rounded-l-lg">
+                                        Karyawan
+                                    </th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Normal</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Off</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Terlambat</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Izin</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Sakit</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Alpha</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Dispensasi</th>
+                                    <th
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Cuti</th>
+                                </tr>
+                            </thead>
+                            <tbody class="space-y-2">
+                                @foreach ($staffList as $staff)
+                                    @php
+                                        $rekap = [
+                                            'H' => 0,
+                                            'O' => 0,
+                                            'T' => 0,
+                                            'I' => 0,
+                                            'S' => 0,
+                                            'A' => 0,
+                                            'D' => 0,
+                                            'C' => 0,
+                                        ];
+
+                                        if (isset($absenData[$staff->id])) {
+                                            foreach ($absenData[$staff->id] as $hari => $records) {
+                                                $status = $records[0]->status ?? null;
+                                                if ($status && isset($rekap[$status])) {
+                                                    $rekap[$status]++;
+                                                }
                                             }
                                         }
-                                    }
-                                @endphp
-                                <tr
-                                    class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
-                                    <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg">
-                                        <div class="flex items-center">
-                                            <div
-                                                class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
-                                                <i class="fas fa-user text-blue-400"></i>
+                                    @endphp
+                                    <tr
+                                        class="bg-gray-800/30 rounded-lg border border-gray-700/50 hover:bg-gray-800/50 transition-colors duration-200">
+                                        <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-gray-800 rounded-l-lg">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-user text-blue-400"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="text-sm font-medium text-white">{{ $staff->nama }}</div>
+                                                    <div class="text-xs text-gray-400">ID: {{ $staff->absen_id }}</div>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <div class="text-sm font-medium text-white">{{ $staff->nama }}</div>
-                                                <div class="text-xs text-gray-400">ID: {{ $staff->absen_id }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-3 py-4 text-center text-green-400 font-semibold">{{ $rekap['H'] }}
-                                    </td>
-                                    <td class="px-3 py-4 text-center text-gray-400">{{ $rekap['O'] }}</td>
-                                    <td class="px-3 py-4 text-center text-purple-400">{{ $rekap['T'] }}</td>
-                                    <td class="px-3 py-4 text-center text-blue-400">{{ $rekap['I'] }}</td>
-                                    <td class="px-3 py-4 text-center text-yellow-400">{{ $rekap['S'] }}</td>
-                                    <td class="px-3 py-4 text-center text-red-400">{{ $rekap['A'] }}</td>
-                                    <td class="px-3 py-4 text-center text-orange-400">{{ $rekap['D'] }}</td>
-                                    <td class="px-3 py-4 text-center text-pink-400">{{ $rekap['C'] }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-2xl text-yellow-400"></i>
+                                        </td>
+                                        <td class="px-3 py-4 text-center text-green-400 font-semibold">{{ $rekap['H'] }}
+                                        </td>
+                                        <td class="px-3 py-4 text-center text-gray-400">{{ $rekap['O'] }}</td>
+                                        <td class="px-3 py-4 text-center text-purple-400">{{ $rekap['T'] }}</td>
+                                        <td class="px-3 py-4 text-center text-blue-400">{{ $rekap['I'] }}</td>
+                                        <td class="px-3 py-4 text-center text-yellow-400">{{ $rekap['S'] }}</td>
+                                        <td class="px-3 py-4 text-center text-red-400">{{ $rekap['A'] }}</td>
+                                        <td class="px-3 py-4 text-center text-orange-400">{{ $rekap['D'] }}</td>
+                                        <td class="px-3 py-4 text-center text-pink-400">{{ $rekap['C'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
-                    <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen</p>
-                    <a href="{{ route('absen.import.form') }}"
-                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
-                        <i class="fas fa-upload mr-2"></i>
-                        Import Data Absen
-                    </a>
-                </div>
-            @endif
+                @else
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-2xl text-yellow-400"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold text-white mb-2">Tidak Ada Data Karyawan</h4>
+                        <p class="text-gray-400 mb-6">Silakan pilih cabang dan periode yang berbeda atau import data absen
+                        </p>
+                        <a href="{{ route('absen.import.form') }}"
+                            class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
+                            <i class="fas fa-upload mr-2"></i>
+                            Import Data Absen
+                        </a>
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
 
-    <style>
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Override transparansi untuk kolom Nama Karyawan */
-        .sticky.bg-gray-800 {
-            background: rgb(31, 41, 55) !important;
-            /* Warna solid dari bg-gray-800 */
-            backdrop-filter: none !important;
-        }
-
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .glass-card,
-            .glass-card * {
-                visibility: visible;
-            }
-
+        <style>
             .glass-card {
-                position: absolute;
-                left: 0;
-                top: 0;
-                background: white !important;
-                color: black !important;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }
 
-            /* Pastikan kolom Nama Karyawan solid saat dicetak */
+            /* Override transparansi untuk kolom Nama Karyawan */
             .sticky.bg-gray-800 {
-                background: #f2f2f2 !important;
-                /* Warna abu-abu terang untuk cetak */
+                background: rgb(31, 41, 55) !important;
+                /* Warna solid dari bg-gray-800 */
                 backdrop-filter: none !important;
             }
 
-            /* Sesuaikan warna teks dan border untuk cetak */
-            .text-white {
-                color: #000 !important;
+            @media print {
+                body * {
+                    visibility: hidden;
+                }
+
+                .glass-card,
+                .glass-card * {
+                    visibility: visible;
+                }
+
+                .glass-card {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    background: white !important;
+                    color: black !important;
+                }
+
+                /* Pastikan kolom Nama Karyawan solid saat dicetak */
+                .sticky.bg-gray-800 {
+                    background: #f2f2f2 !important;
+                    /* Warna abu-abu terang untuk cetak */
+                    backdrop-filter: none !important;
+                }
+
+                /* Sesuaikan warna teks dan border untuk cetak */
+                .text-white {
+                    color: #000 !important;
+                }
+
+                .text-gray-400 {
+                    color: #333 !important;
+                }
+
+                .bg-blue-500\/20,
+                .bg-green-500\/20,
+                .bg-yellow-500\/20,
+                .bg-red-500\/20,
+                .bg-purple-500\/20,
+                .bg-orange-500\/20,
+                .bg-gray-500\/20 {
+                    background: #f2f2f2 !important;
+                    border: 1px solid #000 !important;
+                }
+
+                .text-blue-400,
+                .text-green-400,
+                .text-yellow-400,
+                .text-red-400,
+                .text-purple-400,
+                .text-orange-400,
+                .text-gray-400 {
+                    color: #000 !important;
+                }
             }
 
-            .text-gray-400 {
-                color: #333 !important;
+            input[type="month"]::-webkit-calendar-picker-indicator {
+                filter: invert(100%);
             }
-
-            .bg-blue-500\/20,
-            .bg-green-500\/20,
-            .bg-yellow-500\/20,
-            .bg-red-500\/20,
-            .bg-purple-500\/20,
-            .bg-orange-500\/20,
-            .bg-gray-500\/20 {
-                background: #f2f2f2 !important;
-                border: 1px solid #000 !important;
-            }
-
-            .text-blue-400,
-            .text-green-400,
-            .text-yellow-400,
-            .text-red-400,
-            .text-purple-400,
-            .text-orange-400,
-            .text-gray-400 {
-                color: #000 !important;
-            }
-        }
-
-        input[type="month"]::-webkit-calendar-picker-indicator {
-            filter: invert(100%);
-        }
-    </style>
-@endsection
+        </style>
+    @endsection
