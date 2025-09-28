@@ -91,19 +91,21 @@ class AbsenController extends Controller
                 $tanggal = $tanggalBase->copy()->addDays($tglIndex)->toDateString();
                 $statusIsi = $row[$i] ?? null;
 
-                // Cek hari Minggu otomatis H untuk cabang 1 jika kosong di Excel
-                if ((!$statusIsi || !isset($mapStatus[$statusIsi])) && $cabangId == 1 && Carbon::parse($tanggal)->isSunday()) {
+                $status = null;
+                $keterangan = null;
+
+                // 1️⃣ Status dari Excel
+                if ($statusIsi && isset($mapStatus[$statusIsi])) {
+                    $status = $mapStatus[$statusIsi];
+                } 
+                // 2️⃣ Hari Minggu cabang 1 otomatis H
+                elseif ($cabangId == 1 && Carbon::parse($tanggal)->isSunday()) {
                     $status = 'H';
                     $keterangan = 'Hari Minggu otomatis hadir';
-                } 
-                // Status dari Excel
-                elseif ($statusIsi && isset($mapStatus[$statusIsi])) {
-                    $status = $mapStatus[$statusIsi];
-                    $keterangan = null;
-                } 
-                else {
-                    continue; // tidak ada data, skip
                 }
+
+                // Kalau masih null, skip
+                if (!$status) continue;
 
                 // Skip jika absen sudah ada
                 $sudahAda = Absen::where('staff_id', $staff->id)
