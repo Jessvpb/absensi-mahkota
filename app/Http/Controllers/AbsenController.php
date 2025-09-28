@@ -94,12 +94,13 @@ class AbsenController extends Controller
                 $status = null;
                 $keterangan = null;
 
-                // 1️⃣ Status dari Excel
+                // Ambil status dari Excel
                 if ($statusIsi && isset($mapStatus[$statusIsi])) {
                     $status = $mapStatus[$statusIsi];
-                } 
-                // 2️⃣ Hari Minggu cabang 1 otomatis H
-                elseif ($cabangId == 1 && Carbon::parse($tanggal)->isSunday()) {
+                }
+
+                // Hari Minggu cabang 1 otomatis hadir jika kosong atau Alpha
+                if ($cabangId == 1 && Carbon::parse($tanggal)->isSunday() && in_array($status, ['A', null])) {
                     $status = 'H';
                     $keterangan = 'Hari Minggu otomatis hadir';
                 }
@@ -123,9 +124,8 @@ class AbsenController extends Controller
             }
         }
 
-        return redirect()->route('absen.index')->with('success', 'Data absen berhasil diimpor, hari Minggu cabang 1 otomatis hadir jika kosong.');
+        return redirect()->route('absen.index')->with('success', 'Data absen berhasil diimpor, hari Minggu cabang 1 otomatis hadir jika kosong atau Alpha.');
     }
-
 
     public function riwayat(Request $request)
     {
