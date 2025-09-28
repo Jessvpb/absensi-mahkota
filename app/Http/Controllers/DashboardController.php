@@ -34,16 +34,6 @@ class DashboardController extends Controller
                 $startOfMonth = Carbon::today()->startOfMonth();
                 $endOfMonth = Carbon::today()->endOfMonth();
 
-                $izinCount = Absen::where('staff_id', $staff->id)
-                    ->whereIn('status', ['I', 'S'])
-                    ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
-                    ->count();
-
-                $cutiCount = Absen::where('staff_id', $staff->id)
-                    ->where('status', 'C')
-                    ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
-                    ->count();
-
                 $data['absenSummary'] = [
                     'hadir' => Absen::where('staff_id', $staff->id)
                         ->where('status', 'H')
@@ -57,13 +47,15 @@ class DashboardController extends Controller
                         ->where('status', 'T')
                         ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
                         ->count(),
-                    'izin' => $izinCount,
-                    'cuti' => $cutiCount,
-                ];
+                    'izin' => Absen::where('staff_id', $staff->id)
+                        ->whereIn('status', ['I', 'S', 'C'])
+                        ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
+                        ->count(),
 
-                // Hitung sisa jatah
-                $data['sisaIzinBulanan'] = max(0, ($staff->izin_bulanan ?? 0) - $izinCount);
-                $data['sisaCutiTahunan'] = max(0, ($staff->cuti_tahunan ?? 0) - $cutiCount);
+                    // ambil dari kolom tabel staff (bukan hitung absen lagi)
+                    'izinBulanan' => $staff->sisa_izin_bulanan ?? 0,
+                    'cutiTahunan' => $staff->sisa_cuti_tahunan ?? 0,
+                ];
 
                 // Salary summary (get the latest salary record)
                 $latestSalary = SlipGaji::where('staff_id', $staff->id)
@@ -81,10 +73,9 @@ class DashboardController extends Controller
                     'alpha' => 0,
                     'terlambat' => 0,
                     'izin' => 0,
-                    'cuti' => 0,
+                    'izinBulanan' => 0,
+                    'cutiTahunan' => 0,
                 ];
-                $data['sisaIzinBulanan'] = 0;
-                $data['sisaCutiTahunan'] = 0;
                 $data['salarySummary'] = [
                     'gaji_pokok' => 0,
                     'gaji_bersih' => 0,
@@ -94,7 +85,6 @@ class DashboardController extends Controller
 
         return view('dashboard', $data);
     }
-
 
     public function showResetForm()
     {
