@@ -51,14 +51,10 @@ class DashboardController extends Controller
                         ->whereIn('status', ['I', 'S', 'C'])
                         ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
                         ->count(),
-                    'izinBulanan' => Absen::where('staff_id', $staff->id)
-                        ->whereIn('status', ['A', 'I'])
-                        ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
-                        ->count(),
-                    'cutiTahunan' => Absen::where('staff_id', $staff->id)
-                        ->where('status', 'C')
-                        ->whereBetween('tanggal', [Carbon::today()->startOfYear(), Carbon::today()->endOfYear()])
-                        ->count(),
+
+                    // ambil dari kolom tabel staff (bukan hitung absen lagi)
+                    'izinBulanan' => $staff->sisa_izin_bulanan ?? 0,
+                    'cutiTahunan' => $staff->sisa_cuti_tahunan ?? 0,
                 ];
 
                 // Salary summary (get the latest salary record)
@@ -109,7 +105,10 @@ class DashboardController extends Controller
             'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
-        $user = Auth::user();
+        $user = Auth::user(); // Ensure $user is an instance of the User model
+        if (!$user instanceof \App\Models\User) {
+            abort(500, 'Authenticated user is not a valid User model instance.');
+        }
         $user->password = Hash::make($validated['new_password']);
         $user->save();
 
