@@ -317,6 +317,10 @@
                             <span class="text-gray-400">Keterangan:</span>
                             <span class="font-semibold text-white" x-text="data.keterangan"></span>
                         </p>
+                        <p class="flex justify-between">
+                            <span class="text-gray-400">Divalidasi Oleh:</span>
+                            <span class="font-semibold text-white" x-text="data.admin?.name ?? '-'"></span>
+                        </p>
                     </div>
 
                     <div class="mt-6 flex justify-end">
