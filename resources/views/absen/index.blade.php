@@ -330,6 +330,7 @@
         </div>
 
         <!-- Tambahkan Alpine.js -->
+        <script src="https://unpkg.com/alpinejs" defer></script>
         <script>
             function modalHandler() {
                 return {
