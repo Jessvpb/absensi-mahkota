@@ -163,25 +163,6 @@
                                             @php
                                                 $data = $absenData[$staff->id][$i][0] ?? null;
                                                 $status = $data ? $data->status : '-';
-
-                                                if (isset($absenData[$staff->id])) {
-                                                    foreach ($absenData[$staff->id] as $hari => $records) {
-                                                        $status2 = $records[0]->status2 ?? null;
-
-                                                        // Cek cabang tertentu
-                                                        $isCabangKhusus = $staff->cabang_id == 1; // ganti 1 dengan id cabang yang diinginkan
-
-                                                        // Jika cabang tertentu dan hari Minggu, anggap masuk
-                                                        if (
-                                                            $isCabangKhusus &&
-                                                            \Carbon\Carbon::parse($hari)->isSunday()
-                                                        ) {
-                                                            $rekap['H']++; // bisa dianggap normal
-                                                        } elseif ($status2 && isset($rekap[$status2])) {
-                                                            $rekap[$status2]++;
-                                                        }
-                                                    }
-                                                }
                                             @endphp
 
                                             @if ($status !== '-')
