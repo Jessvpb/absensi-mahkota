@@ -122,7 +122,7 @@
         </div>
 
         <!-- Attendance Table -->
-        <div class="glass-card rounded-2xl p-8">
+        <div class="glass-card rounded-2xl p-8" x-data="modalHandler()">
             <h3 class="text-2xl font-bold text-white mb-6">📊 Tabel Kehadiran Karyawan</h3>
 
             @if (count($staffList) > 0)
@@ -166,17 +166,43 @@
                                             @endphp
 
                                             @if ($status !== '-')
-                                                <span
-                                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold
-                                                @if ($status === 'H') bg-green-500/20 text-green-400 border border-green-500/30
-                                                @elseif($status === 'S') bg-yellow-500/20 text-yellow-400 border border-yellow-500/30
-                                                @elseif($status === 'I') bg-blue-500/20 text-blue-400 border border-blue-500/30
-                                                @elseif($status === 'A') bg-red-500/20 text-red-400 border border-red-500/30
-                                                @elseif($status === 'T') bg-purple-500/20 text-purple-400 border border-purple-500/30
-                                                @elseif($status === 'D') bg-orange-500/20 text-orange-400 border border-orange-500/30
-                                                @else bg-gray-500/20 text-gray-400 border border-gray-500/30 @endif">
-                                                    {{ $status }}
-                                                </span>
+                                                @php
+                                                    $class = match ($status) {
+                                                        'H'
+                                                            => 'bg-green-500/20 text-green-400 border border-green-500/30',
+                                                        'S'
+                                                            => 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
+                                                        'I' => 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
+                                                        'A' => 'bg-red-500/20 text-red-400 border border-red-500/30',
+                                                        'T'
+                                                            => 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+                                                        'D'
+                                                            => 'bg-orange-500/20 text-orange-400 border border-orange-500/30',
+                                                        'E' => 'bg-pink-500/20 text-pink-400 border border-pink-500/30',
+                                                        'L'
+                                                            => 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30',
+                                                        default
+                                                            => 'bg-gray-500/20 text-gray-400 border border-gray-500/30',
+                                                    };
+                                                @endphp
+
+                                                @if (in_array($status, ['I', 'S', 'D', 'C', 'O']))
+                                                    <button
+                                                        @click="openModal({ 
+                                                    staff: '{{ $staff->nama }}',
+                                                    tanggal: '{{ $data->tanggal ?? 'N/A' }}',
+                                                    status: '{{ $data->status }}',
+                                                    keterangan: '{{ $data->keterangan ?? '-' }}'
+                                                })"
+                                                        class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold {{ $class }} hover:scale-110 transition-transform">
+                                                        {{ $status }}
+                                                    </button>
+                                                @else
+                                                    <span
+                                                        class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold {{ $class }}">
+                                                        {{ $status }}
+                                                    </span>
+                                                @endif
                                             @else
                                                 <span class="text-gray-500">-</span>
                                             @endif
@@ -192,61 +218,58 @@
                 <div class="mt-8 p-6 bg-gray-800/30 rounded-lg border border-gray-700/50">
                     <h4 class="text-lg font-semibold text-white mb-4">📖 Keterangan Status</h4>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                        <!-- Baris 1 -->
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-green-500/20 text-green-400 border border-green-500/30">H</span>
+                        bg-green-500/20 text-green-400 border border-green-500/30">H</span>
                             <span class="text-white text-sm">Hadir</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">S</span>
+                        bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">S</span>
                             <span class="text-white text-sm">Sakit</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-blue-500/20 text-blue-400 border border-blue-500/30">I</span>
+                        bg-blue-500/20 text-blue-400 border border-blue-500/30">I</span>
                             <span class="text-white text-sm">Izin</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-red-500/20 text-red-400 border border-red-500/30">A</span>
+                        bg-red-500/20 text-red-400 border border-red-500/30">A</span>
                             <span class="text-white text-sm">Alpha</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-purple-500/20 text-purple-400 border border-purple-500/30">T</span>
+                        bg-purple-500/20 text-purple-400 border border-purple-500/30">T</span>
                             <span class="text-white text-sm">Terlambat</span>
                         </div>
-
-                        <!-- Baris 2 -->
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-orange-500/20 text-orange-400 border border-orange-500/30">D</span>
+                        bg-orange-500/20 text-orange-400 border border-orange-500/30">D</span>
                             <span class="text-white text-sm">Dispensasi</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-pink-500/20 text-pink-400 border border-pink-500/30">E</span>
+                        bg-pink-500/20 text-pink-400 border border-pink-500/30">E</span>
                             <span class="text-white text-sm">Early Leave</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">L</span>
+                        bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">L</span>
                             <span class="text-white text-sm">Late & Early Leave</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span
                                 class="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold 
-                         bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
+                        bg-gray-500/20 text-gray-400 border border-gray-500/30">-</span>
                             <span class="text-white text-sm">Tidak Ada Data</span>
                         </div>
                     </div>
@@ -373,6 +396,51 @@
             @endif
         </div>
     </div>
+
+    <!-- Modal Detail Absen -->
+    <div x-data="modalHandler()" x-show="isOpen"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" x-transition>
+        <div class="bg-white rounded-xl shadow-lg w-96 p-6 relative">
+            <!-- Tombol Close -->
+            <button @click="close" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                ✕
+            </button>
+
+            <h2 class="text-lg font-bold mb-4">Detail Absensi</h2>
+
+            <div class="space-y-2">
+                <p><strong>Nama:</strong> <span x-text="data.staff"></span></p>
+                <p><strong>Status:</strong> <span x-text="data.status"></span></p>
+                <p><strong>Tanggal:</strong> <span x-text="data.tanggal"></span></p>
+                <p><strong>Keterangan:</strong> <span x-text="data.keterangan"></span></p>
+            </div>
+
+            <div class="mt-4 flex justify-end">
+                <button @click="close" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script>
+        function modalHandler() {
+            return {
+                isOpen: false,
+                data: {},
+                openModal(absen) {
+                    this.data = absen;
+                    this.isOpen = true;
+                },
+                close() {
+                    this.isOpen = false;
+                    this.data = {};
+                }
+            }
+        }
+    </script>
+
 
     <style>
         .glass-card {
