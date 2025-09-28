@@ -419,6 +419,8 @@
                                         'A' => 0,
                                         'D' => 0,
                                         'C' => 0,
+                                        'L' => 0,
+                                        'E' => 0,
                                     ];
 
                                     if (isset($absenData[$staff->id])) {
