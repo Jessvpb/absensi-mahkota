@@ -288,7 +288,46 @@
                     </a>
                 </div>
             @endif
+
+            <!-- Modal -->
+            <div x-show="isOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                x-transition>
+                <div class="bg-white rounded-xl shadow-lg w-96 p-6 relative">
+                    <button @click="close" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">✕</button>
+                    <h2 class="text-lg font-bold mb-4">Detail Absensi</h2>
+                    <div class="space-y-2">
+                        <p><strong>Nama:</strong> <span x-text="data.staff"></span></p>
+                        <p><strong>Status:</strong> <span x-text="data.status"></span></p>
+                        <p><strong>Tanggal:</strong> <span x-text="data.tanggal"></span></p>
+                        <p><strong>Keterangan:</strong> <span x-text="data.keterangan"></span></p>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button @click="close"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Tutup</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Tambahkan Alpine.js -->
+        <script src="https://unpkg.com/alpinejs" defer></script>
+        <script>
+            function modalHandler() {
+                return {
+                    isOpen: false,
+                    data: {},
+                    openModal(absen) {
+                        this.data = absen;
+                        this.isOpen = true;
+                    },
+                    close() {
+                        this.isOpen = false;
+                        this.data = {};
+                    }
+                }
+            }
+        </script>
+
 
         {{-- Tabel Rekap Kehadiran Karyawan --}}
         <div class="glass-card rounded-2xl p-8">
@@ -396,51 +435,6 @@
             @endif
         </div>
     </div>
-
-    <!-- Modal Detail Absen -->
-    <div x-data="modalHandler()" x-show="isOpen"
-        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" x-transition>
-        <div class="bg-white rounded-xl shadow-lg w-96 p-6 relative">
-            <!-- Tombol Close -->
-            <button @click="close" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
-                ✕
-            </button>
-
-            <h2 class="text-lg font-bold mb-4">Detail Absensi</h2>
-
-            <div class="space-y-2">
-                <p><strong>Nama:</strong> <span x-text="data.staff"></span></p>
-                <p><strong>Status:</strong> <span x-text="data.status"></span></p>
-                <p><strong>Tanggal:</strong> <span x-text="data.tanggal"></span></p>
-                <p><strong>Keterangan:</strong> <span x-text="data.keterangan"></span></p>
-            </div>
-
-            <div class="mt-4 flex justify-end">
-                <button @click="close" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                    Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://unpkg.com/alpinejs" defer></script>
-    <script>
-        function modalHandler() {
-            return {
-                isOpen: false,
-                data: {},
-                openModal(absen) {
-                    this.data = absen;
-                    this.isOpen = true;
-                },
-                close() {
-                    this.isOpen = false;
-                    this.data = {};
-                }
-            }
-        }
-    </script>
-
 
     <style>
         .glass-card {
