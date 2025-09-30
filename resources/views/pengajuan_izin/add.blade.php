@@ -123,8 +123,8 @@
             <div class="bg-gray-800/30 rounded-lg p-4">
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <p class="text-gray-400 text-sm">Total Hari Izin</p>
-                        <p class="text-2xl font-bold text-white" id="total-days">0 Hari</p>
+                        <p class="text-gray-400 text-sm">Total Pengajuan</p>
+                        <p class="text-2xl font-bold text-white" id="total-days">0 Pengajuan</p>
                     </div>
 
                     <div

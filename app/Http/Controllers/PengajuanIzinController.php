@@ -48,59 +48,18 @@ class PengajuanIzinController extends Controller
     {
         $request->validate([
             'detail' => 'required|array|min:1',
-            'detail.*.tanggal' => 'required|date',
             'detail.*.status' => 'required|string|in:I,S,O,C',
             'detail.*.keterangan' => 'nullable|string|max:255',
             'detail.*.pengganti' => 'required|string|max:255',
+            // tanggal dicek manual nanti (karena bisa single / range)
         ]);
 
         $staff = Staff::where('users_id', Auth::id())->firstOrFail();
-        $cabang = $staff->cabang()->first(); // ambil cabang aktif
+        $cabang = $staff->cabang()->first(); 
         $cabangId = $cabang->id;
-        $maxOff = $cabang->max_off_per_day ?? 999; // batas off per hari dari cabang
+        $maxOff = $cabang->max_off_per_day ?? 999;
 
-        // // Ambil semua tanggal pengajuan
-        // $tanggalList = array_map(fn($item) => Carbon::parse($item['tanggal']), $request->detail);
-
-        // // 1. Cek semua tanggal harus di bulan yang sama
-        // $bulanPertama = $tanggalList[0]->month;
-        // $bulanSama = collect($tanggalList)->every(fn($tgl) => $tgl->month === $bulanPertama);
-        // if (!$bulanSama) {
-        //     return back()->withErrors([
-        //         'detail' => "Semua tanggal pengajuan harus berada di bulan yang sama."
-        //     ])->withInput();
-        // }
-
-        // // 2. Cek selisih maksimum 14 hari
-        // $minTanggal = min($tanggalList);
-        // $maxTanggal = max($tanggalList);
-        // $selisihHari = $minTanggal->diffInDays($maxTanggal) + 1;
-        // if ($selisihHari > 14) {
-        //     return back()->withErrors([
-        //         'detail' => "Pengajuan tidak boleh lebih dari 14 hari (saat ini $selisihHari hari)."
-        //     ])->withInput();
-        // }
-
-        // cek setiap tanggal jika status 'O'
-        foreach ($request->detail as $item) {
-            if ($item['status'] === 'O') {
-                $tanggal = $item['tanggal'];
-
-                $jumlahOff = PengajuanIzin::whereHas('detail_pengajuan_izin', function($q) use ($tanggal) {
-                        $q->where('tanggal', $tanggal)->where('status', 'O');
-                    })
-                    ->where('cabang_id', $cabangId)
-                    ->count();
-
-                if ($jumlahOff >= $maxOff) {
-                    return back()->withErrors([
-                        'detail' => "Jumlah karyawan off di cabang ini pada tanggal $tanggal sudah mencapai batas ($maxOff orang)."
-                    ])->withInput();
-                }
-            }
-        }
-
-        // jika lolos cek, buat pengajuan
+        // buat pengajuan
         $pengajuan = PengajuanIzin::create([
             'staff_id' => $staff->id,
             'cabang_id' => $cabangId,
@@ -111,13 +70,41 @@ class PengajuanIzinController extends Controller
         ]);
 
         foreach ($request->detail as $item) {
-            DetailPengajuanIzin::create([
-                'pengajuan_izin_id' => $pengajuan->id,
-                'tanggal' => $item['tanggal'],
-                'status' => $item['status'],
-                'keterangan' => $item['keterangan'],
-                'pengganti' => $item['pengganti'],
-            ]);
+            // kalau status cuti & ada tanggal_awal + tanggal_akhir
+            if ($item['status'] === 'C' && isset($item['tanggal_awal'], $item['tanggal_akhir'])) {
+                $start = Carbon::parse($item['tanggal_awal']);
+                $end   = Carbon::parse($item['tanggal_akhir']);
+
+                if ($end->lt($start)) {
+                    return back()->withErrors([
+                        'detail' => "Tanggal akhir cuti tidak boleh lebih awal dari tanggal awal."
+                    ])->withInput();
+                }
+
+                // loop semua hari cuti → simpan ke tabel detail
+                for ($date = $start; $date->lte($end); $date->addDay()) {
+                    DetailPengajuanIzin::create([
+                        'pengajuan_izin_id' => $pengajuan->id,
+                        'tanggal' => $date->format('Y-m-d'),
+                        'status' => $item['status'],
+                        'keterangan' => $item['keterangan'],
+                        'pengganti' => $item['pengganti'],
+                    ]);
+                }
+            } else {
+                // default single tanggal
+                $request->validate([
+                    'detail.*.tanggal' => 'required|date',
+                ]);
+
+                DetailPengajuanIzin::create([
+                    'pengajuan_izin_id' => $pengajuan->id,
+                    'tanggal' => $item['tanggal'],
+                    'status' => $item['status'],
+                    'keterangan' => $item['keterangan'],
+                    'pengganti' => $item['pengganti'],
+                ]);
+            }
         }
 
         $user = Auth::user();
@@ -127,7 +114,6 @@ class PengajuanIzinController extends Controller
             return redirect()->route('dashboard')->with('success', 'Pengajuan berhasil ditambahkan.');
         }
     }
-
 
     public function detail($id)
     {
