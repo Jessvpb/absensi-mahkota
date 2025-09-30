@@ -64,10 +64,10 @@
                                     <option value="O">📅 Off</option>
                                 </select>
                             </div>
-                            <div class="md:col-span-3">
+                            <div class="md:col-span-3 tanggal-container">
                                 <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
                                 <input type="date" name="detail[0][tanggal]"
-                                    class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                    class="tanggal-single w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                     required>
                             </div>
                             <div class="md:col-span-3">
@@ -176,12 +176,33 @@
                 }
 
                 let previewHTML = '';
-                rows.forEach((row, index) => {
-                    const tanggal = row.querySelector('input[type="date"]').value;
+                rows.forEach((row, idx) => {
                     const status = row.querySelector('select').value;
-                    const keterangan = row.querySelector('input[type="text"]').value;
+                    const keterangan = row.querySelector('input[name^="detail"][name$="[keterangan]"]')
+                        ?.value;
 
-                    if (tanggal && status) {
+                    // Ambil tanggal single / range
+                    const tanggalAwal = row.querySelector('input[name^="detail"][name$="[tanggal_awal]"]')
+                        ?.value;
+                    const tanggalAkhir = row.querySelector('input[name^="detail"][name$="[tanggal_akhir]"]')
+                        ?.value;
+                    const tanggalSingle = row.querySelector('input[name^="detail"][name$="[tanggal]"]')
+                        ?.value;
+
+                    let tanggalText = '';
+                    if (tanggalAwal && tanggalAkhir) {
+                        tanggalText =
+                            `${new Date(tanggalAwal).toLocaleDateString('id-ID')} s/d ${new Date(tanggalAkhir).toLocaleDateString('id-ID')}`;
+                    } else if (tanggalSingle) {
+                        tanggalText = new Date(tanggalSingle).toLocaleDateString('id-ID', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    }
+
+                    if (status && tanggalText) {
                         const statusLabels = {
                             'I': '🏠 Izin',
                             'S': '🤒 Sakit',
@@ -189,28 +210,49 @@
                             'O': '📅 Off'
                         };
 
-                        const date = new Date(tanggal);
-                        const formattedDate = date.toLocaleDateString('id-ID', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-
                         previewHTML += `
-                    <div class="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg">
-                        <div>
-                            <p class="text-white font-medium">${formattedDate}</p>
-                            <p class="text-gray-400 text-sm">${statusLabels[status] || status}${keterangan ? ' - ' + keterangan : ''}</p>
+                        <div class="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg">
+                            <div>
+                                <p class="text-white font-medium">${tanggalText}</p>
+                                <p class="text-gray-400 text-sm">${statusLabels[status] || status}${keterangan ? ' - ' + keterangan : ''}</p>
+                            </div>
+                            <span class="text-yellow-400 font-semibold">${idx + 1}</span>
                         </div>
-                        <span class="text-yellow-400 font-semibold">${index + 1}</span>
-                    </div>
-                `;
+                    `;
                     }
                 });
 
                 previewList.innerHTML = previewHTML ||
                     '<p class="text-gray-500 italic">Lengkapi data untuk melihat preview</p>';
+            }
+
+            function toggleTanggalField(row, idx) {
+                const statusSelect = row.querySelector(`select[name="detail[${idx}][status]"]`);
+                const tanggalContainer = row.querySelector('.tanggal-container');
+
+                statusSelect.addEventListener('change', () => {
+                    if (statusSelect.value === 'C') {
+                        tanggalContainer.innerHTML = `
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal Cuti</label>
+                        <div class="flex space-x-2">
+                            <input type="date" name="detail[${idx}][tanggal_awal]"
+                                class="w-1/2 px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                required>
+                            <input type="date" name="detail[${idx}][tanggal_akhir]"
+                                class="w-1/2 px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                required>
+                        </div>
+                    `;
+                    } else {
+                        tanggalContainer.innerHTML = `
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
+                        <input type="date" name="detail[${idx}][tanggal]"
+                            class="tanggal-single w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                            required>
+                    `;
+                    }
+                    updatePreview();
+                });
             }
 
             btnAdd.addEventListener('click', () => {
@@ -219,47 +261,48 @@
                     'border-gray-700/50');
 
                 row.innerHTML = `
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Status</label>
-                    <select name="detail[${index}][status]"
-                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
-                        <option value="">Pilih Status</option>
-                        <option value="I">🏠 Izin</option>
-                        <option value="S">🤒 Sakit</option>
-                        <option value="C">🏖️ Cuti</option>
-                        <option value="O">📅 Off</option>
-                    </select>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Status</label>
+                        <select name="detail[${index}][status]"
+                                class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
+                            <option value="">Pilih Status</option>
+                            <option value="I">🏠 Izin</option>
+                            <option value="S">🤒 Sakit</option>
+                            <option value="C">🏖️ Cuti</option>
+                            <option value="O">📅 Off</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-3 tanggal-container">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
+                        <input type="date" name="detail[${index}][tanggal]"
+                            class="tanggal-single w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            required>
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Keterangan</label>
+                        <input type="text" name="detail[${index}][keterangan]"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            placeholder="Masukkan keterangan (opsional)">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Pengganti</label>
+                        <input type="text" name="detail[${index}][pengganti]"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                            placeholder="Masukkan nama pengganti (opsional)">
+                    </div>
+                    <div class="md:col-span-1">
+                        <button type="button" class="w-full px-3 py-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-colors duration-200 border border-red-500/30 btn-remove">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal</label>
-                    <input type="date" name="detail[${index}][tanggal]"
-                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all" required>
-                </div>
-                <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Keterangan</label>
-                    <input type="text" name="detail[${index}][keterangan]"
-                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
-                           placeholder="Masukkan keterangan (opsional)">
-                </div>
-                <div class="md:col-span-3">
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Pengganti</label>
-                    <input type="text" name="detail[0][pengganti]"
-                           class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
-                           placeholder="Masukkan nama pengganti (opsional)">
-                </div>
-                <div class="md:col-span-1">
-                    <button type="button" class="w-full px-3 py-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-colors duration-200 border border-red-500/30 btn-remove">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-        `;
+            `;
                 container.appendChild(row);
+                toggleTanggalField(row, index);
                 index++;
                 updatePreview();
 
-                // Add event listeners to new inputs
                 row.querySelectorAll('input, select').forEach(input => {
                     input.addEventListener('change', updatePreview);
                 });
@@ -277,7 +320,9 @@
                 }
             });
 
-            // Add event listeners to initial inputs
+            // aktifkan toggle untuk row pertama
+            toggleTanggalField(container.querySelector('.detail-row'), 0);
+
             container.addEventListener('change', updatePreview);
 
             updatePreview();
