@@ -168,7 +168,7 @@
             function updatePreview() {
                 const rows = container.querySelectorAll('.detail-row');
                 const totalDays = rows.length;
-                totalDaysElement.textContent = `${totalDays} Hari`;
+                totalDaysElement.textContent = `${totalDays} Pengajuan`;
 
                 if (totalDays === 0) {
                     previewList.innerHTML = '<p class="text-gray-500 italic">Belum ada hari yang dipilih</p>';
