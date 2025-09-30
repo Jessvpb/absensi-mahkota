@@ -149,36 +149,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Ringkasan Gaji (Karyawan) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <div
-                        class="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-xl p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-purple-400 text-sm font-medium">Gaji Pokok Terakhir</p>
-                                <p class="text-2xl font-bold text-white mt-1">Rp
-                                    {{ number_format($salarySummary['gaji_pokok'] ?? 0, 0, ',', '.') }}</p>
-                            </div>
-                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-money-bill-wave text-purple-400"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-xl p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-purple-400 text-sm font-medium">Gaji Bersih Terakhir</p>
-                                <p class="text-2xl font-bold text-white mt-1">Rp
-                                    {{ number_format($salarySummary['gaji_bersih'] ?? 0, 0, ',', '.') }}</p>
-                            </div>
-                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-wallet text-purple-400"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             @endif
 
             {{-- Sisa Jatah Ijin / Cuti --}}
