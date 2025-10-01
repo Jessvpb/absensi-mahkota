@@ -132,10 +132,8 @@ class PengajuanIzinController extends Controller
         }
 
         foreach ($pengajuan->detail_pengajuan_izin as $detail) {
-            $staff = $detail->pengajuan_izin->staff; // pastikan eager load 'pengajuan_izin.staff'
-            echo $staff->name;
+            echo $detail->staff->name;
         }
-
 
         return view('pengajuan_izin.detail', compact('pengajuan'));
     }
