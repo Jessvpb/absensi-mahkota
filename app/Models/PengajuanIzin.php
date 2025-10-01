@@ -43,4 +43,9 @@ class PengajuanIzin extends Model
     {
         return $this->hasMany(DetailPengajuanIzin::class, 'pengajuan_izin_id', 'id');
     }
+
+    public function scopeByCabang($query, $cabangId)
+    {
+        return $query->where('cabang_id', $cabangId);
+    }
 }

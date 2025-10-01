@@ -18,7 +18,14 @@ class PengajuanIzinController extends Controller
         $filter = $request->query('filter', 'semua');
 
         // Query dasar
-        $query = PengajuanIzin::with(['staff']);
+        $user = Auth::user();
+        $query = PengajuanIzin::with(['staff', 'detail_pengajuan_izin']);
+
+        // Filter berdasarkan role
+        if ($user->role === 'kepala') {
+            $cabangId = $user->staff->cabang_id;
+            $query->where('cabang_id', $cabangId);
+        }
 
         // Terapkan filter jika ada
         if ($filter === 'menunggu') {
@@ -144,12 +151,17 @@ class PengajuanIzinController extends Controller
             'aksi' => 'required|in:terima,tolak',
         ]);
 
-        $pengajuan = PengajuanIzin::with('detail_pengajuan_izin.staff.staffCabang')->findOrFail($id);
+        $pengajuan = PengajuanIzin::with('detail_pengajuan_izin')->findOrFail($id);
 
         $staff = Auth::user()->staff;
         $role = Auth::user()->role;
 
-        // Ambil cabang aktif dari staff pengaju
+        // Batasi Kacab hanya bisa memvalidasi pengajuan cabangnya sendiri
+        if ($role === 'kepala' && $pengajuan->cabang_id !== $staff->cabang_id) {
+            abort(403, 'Tidak dapat memvalidasi pengajuan dari cabang lain.');
+        }
+
+        // Ambil cabang aktif dari staff pengaju (untuk cek max off)
         $staffIzin = $pengajuan->staff;
         $cabang = $staffIzin->staffCabang()->where('is_active', true)->first();
         $cabangId = $cabang->cabang_id ?? null;
@@ -162,7 +174,7 @@ class PengajuanIzinController extends Controller
             ];
 
             if ($request->aksi === 'tolak') {
-                $updateData['keterangan'] = $request->alasan . "(Kepala Cabang)";
+                $updateData['keterangan'] = $request->alasan . " (Kepala Cabang)";
                 $updateData['validasi_admin'] = 0;
                 $updateData['admin_id'] = null;
             }
@@ -175,7 +187,7 @@ class PengajuanIzinController extends Controller
             ];
 
             if ($request->aksi === 'tolak') {
-                $updateData['keterangan'] = $request->alasan . "(Admin)";
+                $updateData['keterangan'] = $request->alasan . " (Admin)";
             }
 
             $pengajuan->update($updateData);
@@ -199,7 +211,7 @@ class PengajuanIzinController extends Controller
                 }
             }
 
-            // Jika lolos cek, simpan ke absen
+            // Simpan ke absen jika lolos cek
             foreach ($pengajuan->detail_pengajuan_izin as $detail) {
                 Absen::where('staff_id', $staffIzin->id)
                     ->whereDate('tanggal', $detail->tanggal)
@@ -218,7 +230,6 @@ class PengajuanIzinController extends Controller
 
         return redirect()->route('pengajuanizin.detail', $id)->with('success', 'Pengajuan telah divalidasi.');
     }
-
 
 
     public function riwayat()
