@@ -118,7 +118,8 @@ class PengajuanIzinController extends Controller
     public function detail($id)
     {
         $user = Auth::user();
-        $pengajuan = PengajuanIzin::with(['staff', 'admin', 'cabang', 'kepala', 'detail_pengajuan_izin'])->findOrFail($id);
+        $pengajuan = PengajuanIzin::with(['staff', 'admin', 'cabang', 'kepala', 'detail_pengajuan_izin' => function($q) {
+        $q->with('pengajuan_izin');}])->findOrFail($id);
 
         if ($user->role === 'karyawan' && $pengajuan->staff->users_id !== $user->id) {
             abort(403);
@@ -132,7 +133,7 @@ class PengajuanIzinController extends Controller
             'aksi' => 'required|in:terima,tolak',
         ]);
 
-        $pengajuan = PengajuanIzin::with('detail_pengajuan_izin.staff.staffCabang')->findOrFail($id);
+        $pengajuan = PengajuanIzin::with('pengajuan_izin.staff.staffCabang')->findOrFail($id);
 
         $staff = Auth::user()->staff;
         $role = Auth::user()->role;
