@@ -118,14 +118,30 @@ class PengajuanIzinController extends Controller
     public function detail($id)
     {
         $user = Auth::user();
-        $pengajuan = PengajuanIzin::with(['staff', 'admin', 'cabang', 'kepala', 'detail_pengajuan_izin'])->findOrFail($id);
+
+        // Eager load semua relasi yang dibutuhkan
+        $pengajuan = PengajuanIzin::with([
+            'staff', 
+            'admin', 
+            'kepala', 
+            'cabang', 
+            'detail_pengajuan_izin.pengajuan_izin.staff' // ini penting supaya $detail->pengajuan_izin->staff aman
+        ])->findOrFail($id);
 
         if ($user->role === 'karyawan' && $pengajuan->staff->users_id !== $user->id) {
             abort(403);
         }
 
+        // Contoh loop untuk akses staff dari tiap detail
+        foreach ($pengajuan->detail_pengajuan_izin as $detail) {
+            $staffDetail = $detail->pengajuan_izin->staff; // aman karena sudah eager load
+            // Contoh: tampilkan nama staff
+            // echo $staffDetail->name;
+        }
+
         return view('pengajuan_izin.detail', compact('pengajuan'));
     }
+
     public function validasi(Request $request, $id)
     {
         $request->validate([
