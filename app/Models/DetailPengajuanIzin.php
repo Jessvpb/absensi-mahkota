@@ -15,4 +15,10 @@ class DetailPengajuanIzin extends Model
     {
         return $this->belongsTo(PengajuanIzin::class, 'pengajuan_izin_id', 'id');
     }
+
+    public function staff()
+    {
+        return $this->pengajuan_izin->staff ?? null;
+    }
+
 }
