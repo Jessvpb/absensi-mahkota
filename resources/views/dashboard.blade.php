@@ -121,33 +121,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gradient-to-br from-teal-500/10 to-teal-600/10 border border-teal-500/20 rounded-xl p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-teal-400 text-sm font-medium">Jatah Izin/Alpha Bulanan</p>
-                                <p
-                                    class="text-2xl font-bold text-white mt-1 {{ $absenSummary['izinBulanan'] > 3 ? 'text-red-400' : 'text-green-400' }}">
-                                    {{ $absenSummary['izinBulanan'] ?? 0 }}/3</p>
-                            </div>
-                            <div class="w-12 h-12 bg-teal-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-calendar-alt text-teal-400"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-gradient-to-br from-indigo-500/10 to-indigo-600/10 border border-indigo-500/20 rounded-xl p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-indigo-400 text-sm font-medium">Jatah Cuti Tahunan</p>
-                                <p
-                                    class="text-2xl font-bold text-white mt-1 {{ $absenSummary['cutiTahunan'] > 10 ? 'text-red-400' : 'text-green-400' }}">
-                                    {{ $absenSummary['cutiTahunan'] ?? 0 }}/10</p>
-                            </div>
-                            <div class="w-12 h-12 bg-indigo-500/20 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-calendar-check text-indigo-400"></i>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             @endif
 
