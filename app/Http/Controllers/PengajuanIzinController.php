@@ -19,13 +19,7 @@ class PengajuanIzinController extends Controller
 
         // Query dasar
         $user = Auth::user();
-        $query = PengajuanIzin::with(['staff', 'detail_pengajuan_izin']);
-
-        // Filter berdasarkan role
-        if ($user->role === 'kepala') {
-            $cabangId = $user->staff->cabang_id;
-            $query->where('cabang_id', $cabangId);
-        }
+        $query = PengajuanIzin::with(['staff']);
 
         // Terapkan filter jika ada
         if ($filter === 'menunggu') {
@@ -225,6 +219,8 @@ class PengajuanIzinController extends Controller
 
         return redirect()->route('pengajuanizin.detail', $id)->with('success', 'Pengajuan telah divalidasi.');
     }
+
+
 
     public function riwayat()
     {
