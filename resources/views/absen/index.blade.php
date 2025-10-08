@@ -16,13 +16,15 @@
                     </h2>
                     <p class="text-gray-400 text-lg">Pantau kehadiran karyawan dengan mudah dan akurat</p>
                 </div>
-                <div class="hidden md:block">
-                    <a href="{{ route('absen.import.form') }}"
-                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
-                        <i class="fas fa-upload mr-2"></i>
-                        Import Excel
-                    </a>
-                </div>
+                @if (auth()->user()->role === 'admin')
+                    <div class="hidden md:block">
+                        <a href="{{ route('absen.import.form') }}"
+                            class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-semibold rounded-xl hover:from-yellow-500 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-yellow-500/25">
+                            <i class="fas fa-upload mr-2"></i>
+                            Import Excel
+                        </a>
+                    </div>
+                @endif
             </div>
 
             <!-- Quick Stats -->

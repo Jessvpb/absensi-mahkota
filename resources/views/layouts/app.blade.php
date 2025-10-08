@@ -292,6 +292,11 @@
                                 <i class="fas fa-calendar-check w-5 text-center"></i>
                                 <span class="sidebar-text ml-3">Pengajuan Izin</span>
                             </a>
+                            <a href="{{ route('absen.index') }}"
+                                class="sidebar-item flex items-center px-4 py-3 text-gray-300 rounded-lg {{ request()->routeIs('absen.index') ? 'active' : '' }}">
+                                <i class="fas fa-calendar-alt w-5 text-center"></i>
+                                <span class="sidebar-text ml-3">Data Absen</span>
+                            </a>
                         </div>
                     @endif
                 @endauth
