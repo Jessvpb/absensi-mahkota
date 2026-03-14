@@ -52,13 +52,11 @@ class PengajuanIzinController extends Controller
             'detail.*.status' => 'required|string|in:I,S,O,C',
             'detail.*.keterangan' => 'nullable|string|max:255',
             'detail.*.pengganti' => 'required|string|max:255',
-            // tanggal dicek manual nanti (karena bisa single / range)
         ]);
 
         $staff = Staff::where('users_id', Auth::id())->firstOrFail();
         $cabang = $staff->cabang()->first(); 
         $cabangId = $cabang->id;
-        $maxOff = $cabang->max_off_per_day ?? 999;
 
         // buat pengajuan
         $pengajuan = PengajuanIzin::create([
@@ -71,7 +69,6 @@ class PengajuanIzinController extends Controller
         ]);
 
         foreach ($request->detail as $item) {
-            // kalau status cuti & ada tanggal_awal + tanggal_akhir
             if ($item['status'] === 'C' && isset($item['tanggal_awal'], $item['tanggal_akhir'])) {
                 $start = Carbon::parse($item['tanggal_awal']);
                 $end   = Carbon::parse($item['tanggal_akhir']);
@@ -82,7 +79,6 @@ class PengajuanIzinController extends Controller
                     ])->withInput();
                 }
 
-                // loop semua hari cuti → simpan ke tabel detail
                 for ($date = $start; $date->lte($end); $date->addDay()) {
                     DetailPengajuanIzin::create([
                         'pengajuan_izin_id' => $pengajuan->id,
@@ -93,11 +89,6 @@ class PengajuanIzinController extends Controller
                     ]);
                 }
             } else {
-                // default single tanggal
-                $request->validate([
-                    'detail.*.tanggal' => 'required|date',
-                ]);
-
                 DetailPengajuanIzin::create([
                     'pengajuan_izin_id' => $pengajuan->id,
                     'tanggal' => $item['tanggal'],
@@ -132,10 +123,6 @@ class PengajuanIzinController extends Controller
             abort(403);
         }
 
-        foreach ($pengajuan->detail_pengajuan_izin as $detail) {
-            echo $detail->staff->name;
-        }
-
         return view('pengajuan_izin.detail', compact('pengajuan'));
     }
 
@@ -147,10 +134,9 @@ class PengajuanIzinController extends Controller
 
         $pengajuan = PengajuanIzin::with('detail_pengajuan_izin.staff.staffCabang')->findOrFail($id);
 
-        $staff = Auth::user()->staff;
+        $staffApprove = Auth::user()->staff; // Staff yang sedang login/melakukan acc
         $role = Auth::user()->role;
 
-        // Ambil cabang aktif dari staff pengaju
         $staffIzin = $pengajuan->staff;
         $cabang = $staffIzin->staffCabang()->where('is_active', true)->first();
         $cabangId = $cabang->cabang_id ?? null;
@@ -159,7 +145,8 @@ class PengajuanIzinController extends Controller
         if ($role === 'kepala') {
             $updateData = [
                 'validasi_kepalacabang' => $request->aksi === 'terima' ? 1 : 0,
-                'kepala_id' => $staff->id,
+                'kepala_id' => $staffApprove->id,
+                'tgl_validasi_kepala' => now(), // PENAMBAHAN: Catat waktu Kacab
             ];
 
             if ($request->aksi === 'tolak') {
@@ -172,7 +159,8 @@ class PengajuanIzinController extends Controller
         } elseif ($role === 'admin') {
             $updateData = [
                 'validasi_admin' => $request->aksi === 'terima' ? 1 : 0,
-                'admin_id' => $staff->id,
+                'admin_id' => $staffApprove->id,
+                'tgl_validasi_admin' => now(), // PENAMBAHAN: Catat waktu Admin
             ];
 
             if ($request->aksi === 'tolak') {
@@ -191,6 +179,8 @@ class PengajuanIzinController extends Controller
                         $q->where('tanggal', $detail->tanggal)->where('status', 'O');
                     })
                     ->where('cabang_id', $cabangId)
+                    ->where('validasi_admin', 1)
+                    ->where('validasi_kepalacabang', 1)
                     ->count();
 
                 if ($jumlahOff > $maxOff) {
@@ -220,31 +210,16 @@ class PengajuanIzinController extends Controller
         return redirect()->route('pengajuanizin.detail', $id)->with('success', 'Pengajuan telah divalidasi.');
     }
 
-
-
     public function riwayat()
     {
         $staff = Auth::user()->staff;
-
-        if (!$staff) {
-            abort(403, 'User belum terhubung dengan data staff.');
-        }
+        if (!$staff) abort(403, 'User belum terhubung dengan data staff.');
 
         $pengajuan = PengajuanIzin::with('detail_pengajuan_izin')
             ->where('staff_id', $staff->id)
             ->latest()
             ->get();
 
-        $totalPengajuan = $pengajuan->count();
-        $menunggu = $pengajuan->filter(fn($item) => is_null($item->validasi_admin) || is_null($item->validasi_kepalacabang))->count();
-        $diterimaCount = $pengajuan->filter(fn($item) => $item->validasi_admin === 1 && $item->validasi_kepalacabang === 1)->count();
-        $ditolak = $pengajuan->filter(fn($item) => $item->validasi_admin === 0 || $item->validasi_kepalacabang === 0)->count();
-        $diterima = PengajuanIzin::where('staff_id', $staff->id)
-            ->where('validasi_admin', 1)
-            ->where('validasi_kepalacabang', 1); // Add this if needed
-
         return view('pengajuan_izin.riwayat', compact('pengajuan'));
     }
-
-
 }

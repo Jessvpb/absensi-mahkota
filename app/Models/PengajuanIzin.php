@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PengajuanIzin extends Model
 {
     protected $table = 'pengajuan_izin';
+    
     protected $fillable = [
         'staff_id',
         'cabang_id',
@@ -14,13 +15,25 @@ class PengajuanIzin extends Model
         'admin_id',
         'validasi_kepalacabang',
         'kepala_id',
+        'tgl_validasi_kepala', // Kolom baru
+        'tgl_validasi_admin',  // Kolom baru
     ];
+
+    /**
+     * Casting kolom agar otomatis menjadi objek Carbon (waktu)
+     */
+    protected $casts = [
+        'tgl_validasi_kepala' => 'datetime',
+        'tgl_validasi_admin' => 'datetime',
+    ];
+
     // 1 pengajuan punya 1 karyawan | 1 karyawan punya banyak pengajuan
     // Relasi ke staff (yang mengajukan)
     public function cabang()
     {
         return $this->belongsTo(Cabang::class, 'cabang_id', 'id');
     }
+    
     public function staff()
     {
         return $this->belongsTo(Staff::class, 'staff_id', 'id');
