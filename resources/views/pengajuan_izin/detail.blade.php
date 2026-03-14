@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="max-w-4xl mx-auto space-y-6">
+        <!-- Header -->
         <div class="glass-card rounded-2xl p-6">
             <div class="flex items-center justify-between">
                 <div>
@@ -20,7 +21,9 @@
             </div>
         </div>
 
+        <!-- Main Information -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Staff Information -->
             <div class="glass-card rounded-2xl p-6">
                 <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
                     <i class="fas fa-user mr-2 text-yellow-400"></i>
@@ -75,6 +78,7 @@
                 </div>
             </div>
 
+            <!-- Status & Validation -->
             <div class="glass-card rounded-2xl p-6">
                 <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
                     <i class="fas fa-tasks mr-2 text-yellow-400"></i>
@@ -82,6 +86,7 @@
                 </h3>
 
                 <div class="space-y-4">
+                    <!-- Kepala Cabang Status -->
                     <div class="p-4 bg-gray-800/30 rounded-lg">
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center">
@@ -108,17 +113,13 @@
                                 </span>
                             @endif
                         </div>
-                        {{-- Tambahan keterangan waktu di bawah status --}}
-                        @if ($pengajuan->tgl_validasi_kepala)
-                            <p class="text-[10px] text-gray-500 italic mb-2">Divalidasi pada:
-                                {{ $pengajuan->tgl_validasi_kepala->format('d/m/Y H:i') }}</p>
-                        @endif
                         <div class="w-full bg-gray-700/50 rounded-full h-2">
                             <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
                                 style="width: {{ $pengajuan->validasi_kepalacabang === null ? '0%' : '100%' }}"></div>
                         </div>
                     </div>
 
+                    <!-- Admin Status -->
                     <div class="p-4 bg-gray-800/30 rounded-lg">
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center">
@@ -145,17 +146,13 @@
                                 </span>
                             @endif
                         </div>
-                        {{-- Tambahan keterangan waktu di bawah status --}}
-                        @if ($pengajuan->tgl_validasi_admin)
-                            <p class="text-[10px] text-gray-500 italic mb-2">Divalidasi pada:
-                                {{ $pengajuan->tgl_validasi_admin->format('d/m/Y H:i') }}</p>
-                        @endif
                         <div class="w-full bg-gray-700/50 rounded-full h-2">
                             <div class="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full transition-all duration-500"
                                 style="width: {{ $pengajuan->validasi_admin === null ? '0%' : '100%' }}"></div>
                         </div>
                     </div>
 
+                    <!-- Overall Status -->
                     <div class="p-4 bg-gray-800/50 rounded-lg border-2 border-dashed border-gray-600/50">
                         <div class="text-center">
                             <p class="text-gray-400 text-sm mb-2">Status Keseluruhan</p>
@@ -184,6 +181,7 @@
             </div>
         </div>
 
+        <!-- Detail Hari Izin -->
         <div class="glass-card rounded-2xl p-6">
             <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
                 <i class="fas fa-calendar-days mr-2 text-yellow-400"></i>
@@ -274,6 +272,7 @@
             </div>
         </div>
 
+        <!-- Action Buttons -->
         @if (Auth::user()->role === 'admin' || Auth::user()->role === 'kepala')
             <div class="glass-card rounded-2xl p-6">
                 <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
@@ -291,12 +290,14 @@
                                 <input type="hidden" name="aksi" id="adminAksi">
                                 <input type="hidden" name="alasan" id="adminAlasan">
 
+                                <!-- Terima -->
                                 <button type="button" onclick="submitForm('terima', 'admin')"
                                     class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105">
                                     <i class="fas fa-check mr-2"></i>
                                     Terima Pengajuan
                                 </button>
 
+                                <!-- Tolak -->
                                 <button type="button" onclick="submitForm('tolak', 'admin')"
                                     class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105">
                                     <i class="fas fa-times mr-2"></i>
@@ -329,12 +330,14 @@
                         <input type="hidden" name="aksi" id="kepalaAksi">
                         <input type="hidden" name="alasan" id="kepalaAlasan">
 
+                        <!-- Terima -->
                         <button type="button" onclick="submitForm('terima', 'kepala')"
                             class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105">
                             <i class="fas fa-check mr-2"></i>
                             Terima Pengajuan
                         </button>
 
+                        <!-- Tolak -->
                         <button type="button" onclick="submitForm('tolak', 'kepala')"
                             class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105">
                             <i class="fas fa-times mr-2"></i>
@@ -345,6 +348,7 @@
             </div>
         @endif
 
+        <!-- Rejection Reason Modal -->
         <div id="rejectionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
             <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full">
                 <h3 class="text-xl font-semibold text-white mb-4">Alasan Penolakan</h3>
@@ -359,6 +363,7 @@
             </div>
         </div>
 
+        <!-- Timeline -->
         <div class="glass-card rounded-2xl p-6">
             <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
                 <i class="fas fa-history mr-2 text-yellow-400"></i>
@@ -371,25 +376,23 @@
                     <p class="text-white font-medium">Pengajuan Dibuat</p>
                     <p class="text-gray-400 text-sm">{{ $pengajuan->created_at->format('d M Y, H:i') }}</p>
                 </div>
-                {{-- Menggunakan tgl_validasi_kepala --}}
-                @if ($pengajuan->tgl_validasi_kepala !== null)
+                @if ($pengajuan->validasi_kepalacabang !== null)
                     <div class="relative pl-8 border-l-2 border-gray-700/50">
                         <div
                             class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-purple-500 border-2 border-gray-900">
                         </div>
                         <p class="text-white font-medium">Kepala Cabang
                             {{ $pengajuan->validasi_kepalacabang ? 'Menyetujui' : 'Menolak' }}</p>
-                        <p class="text-gray-400 text-sm">{{ $pengajuan->tgl_validasi_kepala->format('d M Y, H:i') }}</p>
+                        <p class="text-gray-400 text-sm">{{ $pengajuan->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 @endif
-                {{-- Menggunakan tgl_validasi_admin --}}
-                @if ($pengajuan->tgl_validasi_admin !== null)
+                @if ($pengajuan->validasi_admin !== null)
                     <div class="relative pl-8 border-l-2 border-gray-700/50">
                         <div class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-green-500 border-2 border-gray-900">
                         </div>
                         <p class="text-white font-medium">Admin
                             {{ $pengajuan->validasi_admin ? 'Menyetujui' : 'Menolak' }}</p>
-                        <p class="text-gray-400 text-sm">{{ $pengajuan->tgl_validasi_admin->format('d M Y, H:i') }}</p>
+                        <p class="text-gray-400 text-sm">{{ $pengajuan->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 @endif
             </div>
