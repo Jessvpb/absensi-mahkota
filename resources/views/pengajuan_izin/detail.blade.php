@@ -108,8 +108,9 @@
                                 </span>
                             @endif
                         </div>
+                        {{-- Tambahan keterangan waktu di bawah status --}}
                         @if ($pengajuan->tgl_validasi_kepala)
-                            <p class="text-[10px] text-gray-500 italic mb-2">Divalidasi:
+                            <p class="text-[10px] text-gray-500 italic mb-2">Divalidasi pada:
                                 {{ $pengajuan->tgl_validasi_kepala->format('d/m/Y H:i') }}</p>
                         @endif
                         <div class="w-full bg-gray-700/50 rounded-full h-2">
@@ -144,8 +145,9 @@
                                 </span>
                             @endif
                         </div>
+                        {{-- Tambahan keterangan waktu di bawah status --}}
                         @if ($pengajuan->tgl_validasi_admin)
-                            <p class="text-[10px] text-gray-500 italic mb-2">Divalidasi:
+                            <p class="text-[10px] text-gray-500 italic mb-2">Divalidasi pada:
                                 {{ $pengajuan->tgl_validasi_admin->format('d/m/Y H:i') }}</p>
                         @endif
                         <div class="w-full bg-gray-700/50 rounded-full h-2">
@@ -223,7 +225,7 @@
                                             <div class="text-white font-medium">
                                                 {{ \Carbon\Carbon::parse($detail->tanggal)->format('d M Y') }}</div>
                                             <div class="text-gray-400 text-sm">
-                                                {{ \Carbon\Carbon::parse($detail->tanggal)->translatedFormat('l') }}</div>
+                                                {{ \Carbon\Carbon::parse($detail->tanggal)->format('l') }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -369,8 +371,8 @@
                     <p class="text-white font-medium">Pengajuan Dibuat</p>
                     <p class="text-gray-400 text-sm">{{ $pengajuan->created_at->format('d M Y, H:i') }}</p>
                 </div>
-
-                @if ($pengajuan->tgl_validasi_kepala)
+                {{-- Menggunakan tgl_validasi_kepala --}}
+                @if ($pengajuan->tgl_validasi_kepala !== null)
                     <div class="relative pl-8 border-l-2 border-gray-700/50">
                         <div
                             class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-purple-500 border-2 border-gray-900">
@@ -380,8 +382,8 @@
                         <p class="text-gray-400 text-sm">{{ $pengajuan->tgl_validasi_kepala->format('d M Y, H:i') }}</p>
                     </div>
                 @endif
-
-                @if ($pengajuan->tgl_validasi_admin)
+                {{-- Menggunakan tgl_validasi_admin --}}
+                @if ($pengajuan->tgl_validasi_admin !== null)
                     <div class="relative pl-8 border-l-2 border-gray-700/50">
                         <div class="absolute left-[-7px] top-0 w-3 h-3 rounded-full bg-green-500 border-2 border-gray-900">
                         </div>
