@@ -19,19 +19,27 @@ class PengajuanIzinController extends Controller
 
         // Query dasar
         $user = Auth::user();
-        $query = PengajuanIzin::with(['staff']);
+        $query = PengajuanIzin::with(['staff', 'detail_pengajuan_izin', 'admin']);
 
-        // Terapkan filter jika ada
+        // Terapkan filter yang sudah sinkron dengan Blade
         if ($filter === 'menunggu') {
             $query->where(function ($q) {
-                $q->whereNull('validasi_admin')->orWhereNull('validasi_kepalacabang');
+                // Belum di-acc admin DAN belum ditolak oleh siapapun
+                $q->whereNull('validasi_admin')
+                ->where(function($sub) {
+                    $sub->whereNull('validasi_kepalacabang')
+                        ->orWhere('validasi_kepalacabang', 1);
+                });
             });
         } elseif ($filter === 'ditolak') {
             $query->where(function ($q) {
-                $q->where('validasi_admin', 0)->orWhere('validasi_kepalacabang', 0);
+                // Ditolak salah satu sudah cukup masuk kategori ditolak
+                $q->where('validasi_admin', 0)
+                ->orWhere('validasi_kepalacabang', 0);
             });
-        } elseif ($filter === 'diterima') {
-            $query->where('validasi_admin', 1)->where('validasi_kepalacabang', 1);
+        } elseif ($filter === 'acc') { // SINKRONKAN: Ubah dari 'diterima' ke 'acc' sesuai value di Blade
+            $query->where('validasi_admin', 1)
+                ->where('validasi_kepalacabang', 1);
         }
 
         // Eksekusi query
