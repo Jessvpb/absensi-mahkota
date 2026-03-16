@@ -383,7 +383,9 @@
                         </div>
                         <p class="text-white font-medium">Kepala Cabang
                             {{ $pengajuan->validasi_kepalacabang ? 'Menyetujui' : 'Menolak' }}</p>
-                        <p class="text-gray-400 text-sm">{{ $pengajuan->updated_at->format('d M Y, H:i') }}</p>
+                        <p class="text-gray-400 text-sm">
+                            {{ $pengajuan->tgl_validasi_kepala ? $pengajuan->tgl_validasi_kepala->format('d M Y, H:i') : '-' }}
+                        </p>
                     </div>
                 @endif
                 @if ($pengajuan->validasi_admin !== null)
@@ -392,7 +394,9 @@
                         </div>
                         <p class="text-white font-medium">Admin
                             {{ $pengajuan->validasi_admin ? 'Menyetujui' : 'Menolak' }}</p>
-                        <p class="text-gray-400 text-sm">{{ $pengajuan->updated_at->format('d M Y, H:i') }}</p>
+                        <p class="text-gray-400 text-sm">
+                            {{ $pengajuan->tgl_validasi_admin ? $pengajuan->tgl_validasi_admin->format('d M Y, H:i') : '-' }}
+                        </p>
                     </div>
                 @endif
             </div>
