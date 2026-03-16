@@ -43,11 +43,14 @@
                         <option value="semua" {{ $filter == 'semua' ? 'selected' : '' }}>
                             Semua Status
                         </option>
-                        <option value="menunggu" {{ $filter == 'menunggu' ? 'selected' : '' }}>
-                            Menunggu ACC
+                        <option value="menunggu_kacab" {{ $filter == 'menunggu_kacab' ? 'selected' : '' }}>
+                            Menunggu Kacab
+                        </option>
+                        <option value="menunggu_admin" {{ $filter == 'menunggu_admin' ? 'selected' : '' }}>
+                            Menunggu Admin
                         </option>
                         <option value="acc" {{ $filter == 'acc' ? 'selected' : '' }}>
-                            Di-ACC
+                            Sudah Di-ACC
                         </option>
                         <option value="ditolak" {{ $filter == 'ditolak' ? 'selected' : '' }}>
                             Ditolak
