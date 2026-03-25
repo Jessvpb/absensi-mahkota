@@ -6,7 +6,6 @@
 
 @section('content')
     <div class="space-y-6">
-        <!-- Header Card -->
         <div class="glass-card rounded-2xl p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -27,7 +26,6 @@
                 @endif
             </div>
 
-            <!-- Quick Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
                 <div class="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-xl p-6">
                     <div class="flex items-center justify-between">
@@ -82,9 +80,8 @@
             </div>
         </div>
 
-        <!-- Filter Section -->
         <div class="glass-card rounded-2xl p-8">
-            <h3 class="text-2xl font-bold text-white mb-6">🔍 Filter Data Absen</h3>
+            <h3 class="text-2xl font-bold text-white mb-6">🔍 Filter & Export Data</h3>
             <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-2">Pilih Cabang</label>
@@ -114,16 +111,15 @@
                 </div>
 
                 <div class="flex items-end">
-                    <button type="button" onclick="window.print()"
-                        class="w-full px-6 py-3 bg-gray-700 text-white font-medium rounded-lg hover:bg-gray-600 transition-all duration-300">
-                        <i class="fas fa-print mr-2"></i>
-                        Print
-                    </button>
+                    <a href="{{ route('absen.export', ['month' => \Carbon\Carbon::parse($bulan)->month, 'year' => \Carbon\Carbon::parse($bulan)->year]) }}"
+                        class="w-full px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg shadow-green-600/20 text-center flex items-center justify-center">
+                        <i class="fas fa-file-excel mr-2"></i>
+                        Export Excel
+                    </a>
                 </div>
             </form>
         </div>
 
-        <!-- Attendance Table -->
         <div class="glass-card rounded-2xl p-8" x-data="modalHandler()">
             <h3 class="text-2xl font-bold text-white mb-6">📊 Tabel Kehadiran Karyawan</h3>
 
@@ -216,7 +212,6 @@
                     </table>
                 </div>
 
-                <!-- Legend -->
                 <div class="mt-8 p-6 bg-gray-800/30 rounded-lg border border-gray-700/50">
                     <h4 class="text-lg font-semibold text-white mb-4">📖 Keterangan Status</h4>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -291,7 +286,6 @@
                 </div>
             @endif
 
-            <!-- Modal -->
             <div x-show="isOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
                 x-transition>
                 <div class="glass-card rounded-2xl shadow-xl w-96 p-6 relative border border-gray-700">
@@ -335,7 +329,6 @@
             </div>
         </div>
 
-        <!-- Tambahkan Alpine.js -->
         <script src="https://unpkg.com/alpinejs" defer></script>
         <script>
             function modalHandler() {
@@ -489,67 +482,9 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Override transparansi untuk kolom Nama Karyawan */
         .sticky.bg-gray-800 {
             background: rgb(31, 41, 55) !important;
-            /* Warna solid dari bg-gray-800 */
             backdrop-filter: none !important;
-        }
-
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .glass-card,
-            .glass-card * {
-                visibility: visible;
-            }
-
-            .glass-card {
-                position: absolute;
-                left: 0;
-                top: 0;
-                background: white !important;
-                color: black !important;
-            }
-
-            /* Pastikan kolom Nama Karyawan solid saat dicetak */
-            .sticky.bg-gray-800 {
-                background: #f2f2f2 !important;
-                /* Warna abu-abu terang untuk cetak */
-                backdrop-filter: none !important;
-            }
-
-            /* Sesuaikan warna teks dan border untuk cetak */
-            .text-white {
-                color: #000 !important;
-            }
-
-            .text-gray-400 {
-                color: #333 !important;
-            }
-
-            .bg-blue-500\/20,
-            .bg-green-500\/20,
-            .bg-yellow-500\/20,
-            .bg-red-500\/20,
-            .bg-purple-500\/20,
-            .bg-orange-500\/20,
-            .bg-gray-500\/20 {
-                background: #f2f2f2 !important;
-                border: 1px solid #000 !important;
-            }
-
-            .text-blue-400,
-            .text-green-400,
-            .text-yellow-400,
-            .text-red-400,
-            .text-purple-400,
-            .text-orange-400,
-            .text-gray-400 {
-                color: #000 !important;
-            }
         }
 
         input[type="month"]::-webkit-calendar-picker-indicator {

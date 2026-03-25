@@ -112,6 +112,7 @@ Route::prefix('absen')->middleware('auth')->group(function () {
     Route::get('/', [AbsenController::class, 'index'])->name('absen.index');
     Route::get('/import', [AbsenController::class, 'importForm'])->name('absen.import.form');
     Route::post('/import', [AbsenController::class, 'importProses'])->name('absen.import.proses');
+    Route::get('/export', [AbsenController::class, 'exportExcel'])->name('absen.export');
 });
 
 Route::get('/absen/riwayat', [AbsenController::class, 'riwayat'])->name('absen.riwayat')->middleware('auth');

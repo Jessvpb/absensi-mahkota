@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\AbsensiExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AbsenController extends Controller
 {
@@ -142,5 +144,18 @@ class AbsenController extends Controller
             ->get();
 
         return view('absen.riwayat', compact('absen', 'bulan'));
+    }
+
+    public function exportExcel(Request $request)
+    {
+        // Ambil bulan & tahun dari filter, kalau kosong pakai bulan sekarang
+        $month = $request->month ?? now()->month;
+        $year = $request->year ?? now()->year;
+        
+        // Nama file rapi: Laporan_Absensi_Maret_2026.xlsx
+        $monthName = \Carbon\Carbon::create()->month($month)->translatedFormat('F');
+        $fileName = "Laporan_Absensi_{$monthName}_{$year}.xlsx";
+
+        return Excel::download(new AbsensiExport($month, $year), $fileName);
     }
 }
