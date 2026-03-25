@@ -6,7 +6,6 @@
 
 @section('content')
     <style>
-        /* PDF-specific styles */
         @media print {
             .glass-card {
                 background: none;
@@ -30,39 +29,8 @@
                 color: #333 !important;
             }
 
-            .text-yellow-400 {
-                color: #000 !important;
-            }
-
-            .text-red-400 {
-                color: #000 !important;
-            }
-
-            .text-purple-400 {
-                color: #000 !important;
-            }
-
-            .bg-blue-600,
-            .hover\:bg-blue-700:hover {
-                background: none !important;
-                border: 1px solid #000;
-                color: #000 !important;
-            }
-
-            .bg-green-500,
-            .hover\:bg-green-600:hover {
-                background: none !important;
-                border: 1px solid #000;
-                color: #000 !important;
-            }
-
-            .hover\:bg-gray-800\/30:hover {
-                background: none !important;
-            }
-
-            .transform,
-            .hover\:scale-105:hover {
-                transform: none !important;
+            .hidden-in-pdf {
+                display: none !important;
             }
 
             table {
@@ -74,53 +42,32 @@
             td {
                 border: 1px solid #000;
                 padding: 8px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            .text-right {
-                text-align: right;
-            }
-
-            .text-center {
-                text-align: center;
-            }
-
-            .hidden-in-pdf {
-                display: none !important;
+                font-size: 10pt;
             }
         }
     </style>
 
     <div class="space-y-6">
-        <!-- Header Actions -->
         <div class="glass-card rounded-2xl p-6">
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-white mb-2">Riwayat Penggajian</h2>
-                    <p class="text-gray-400">Pantau riwayat penggajian karyawan per {{ now()->format('F Y') }}</p>
+                    <p class="text-gray-400">Pantau riwayat penggajian karyawan per {{ now()->translatedFormat('F Y') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('slip.riwayat.pdf') }}"
-                        class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-file-pdf mr-2"></i>
-                        Cetak PDF
+                        class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/20">
+                        <i class="fas fa-file-pdf mr-2"></i> Cetak PDF
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- Filters -->
         <div class="glass-card rounded-2xl p-6">
             <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-filter mr-2 text-yellow-400"></i>
-                Filter Riwayat
+                <i class="fas fa-filter mr-2 text-yellow-400"></i> Filter Riwayat
             </h3>
-
             <form method="GET" action="{{ route('slip.riwayat') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Month Filter -->
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Bulan</label>
                     <select name="month"
@@ -128,13 +75,11 @@
                         <option value="">-- Semua Bulan --</option>
                         @for ($i = 1; $i <= 12; $i++)
                             <option value="{{ $i }}" {{ request('month') == $i ? 'selected' : '' }}>
-                                {{ \Carbon\Carbon::create()->month($i)->format('F') }}
+                                {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}
                             </option>
                         @endfor
                     </select>
                 </div>
-
-                <!-- Year Filter -->
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Tahun</label>
                     <select name="year"
@@ -142,97 +87,69 @@
                         <option value="">-- Semua Tahun --</option>
                         @for ($i = 2020; $i <= now()->year; $i++)
                             <option value="{{ $i }}" {{ request('year') == $i ? 'selected' : '' }}>
-                                {{ $i }}
-                            </option>
+                                {{ $i }}</option>
                         @endfor
                     </select>
                 </div>
-
-                <!-- Filter Button -->
                 <div class="flex items-end">
                     <button type="submit"
-                        class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-search mr-2"></i>
-                        Filter
+                        class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">
+                        <i class="fas fa-search mr-2"></i> Terapkan Filter
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Salary History Table -->
-        <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="glass-card rounded-2xl overflow-hidden border border-gray-700/50">
             <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-800/50 border-b border-gray-700/50">
+                <table class="w-full border-collapse">
+                    <thead class="bg-gray-800/80 border-b border-gray-700">
                         <tr>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-calendar mr-2 text-yellow-400"></i>
-                                Periode
+                            <th class="px-4 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">
+                                Periode</th>
+                            <th class="px-4 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                Karyawan</th>
+                            <th class="px-4 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Cabang
                             </th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-user mr-2 text-yellow-400"></i>
-                                Nama Staff
-                            </th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-building mr-2 text-yellow-400"></i>
-                                Cabang
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-money-bill-wave mr-2 text-yellow-400"></i>
-                                Gaji Pokok
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-hand-holding-usd mr-2 text-yellow-400"></i>
-                                Tunjangan
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-file-invoice-dollar mr-2 text-red-400"></i>
-                                Total Potongan
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-wallet mr-2 text-yellow-400"></i>
-                                Gaji Bersih
-                            </th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-eye mr-2 text-yellow-400"></i>
-                                Aksi
-                            </th>
+                            <th class="px-4 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">Gaji
+                                Pokok</th>
+                            <th class="px-4 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                Tunjangan</th>
+                            <th
+                                class="px-4 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-wider text-red-400">
+                                Total Potongan</th>
+                            <th class="px-4 py-4 text-right text-xs font-bold text-yellow-400 uppercase tracking-wider">Gaji
+                                Bersih</th>
+                            <th
+                                class="px-4 py-4 text-center text-xs font-bold text-gray-400 uppercase tracking-wider hidden-in-pdf w-28">
+                                Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-700/50">
+                    <tbody class="divide-y divide-gray-700/50 bg-gray-900/20">
                         @forelse($payrolls as $payroll)
-                            <tr class="hover:bg-gray-800/30 transition-colors duration-200">
-                                <td class="px-6 py-4">
+                            <tr class="hover:bg-gray-800/40 transition-colors duration-150">
+                                <td class="px-4 py-4 whitespace-nowrap">
                                     <span
-                                        class="text-white">{{ \Carbon\Carbon::parse($payroll->periode)->format('F Y') }}</span>
+                                        class="text-gray-300 font-medium">{{ \Carbon\Carbon::parse($payroll->periode)->translatedFormat('M Y') }}</span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-4">
                                     <div class="flex items-center">
-                                        <div
-                                            class="w-10 h-10 bg-gradient-to-br from-yellow-400/20 to-amber-500/20 rounded-full flex items-center justify-center mr-3">
-                                            <i class="fas fa-user text-yellow-400"></i>
-                                        </div>
-                                        <div>
-                                            <div class="text-white font-medium">
-                                                {{ $payroll->staff->nama ?? 'Tidak Diketahui' }}</div>
-                                        </div>
+                                        <div class="text-white font-semibold">{{ $payroll->staff->nama ?? 'N/A' }}</div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-4">
                                     <span
-                                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                                        class="text-purple-400 text-sm bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">
                                         {{ $payroll->cabang->nama_cabang ?? '-' }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-white font-medium">Rp
-                                        {{ number_format($payroll->gaji_pokok, 0, ',', '.') }}</span>
+                                <td class="px-4 py-4 text-right text-gray-300 font-mono">
+                                    {{ number_format($payroll->gaji_pokok, 0, ',', '.') }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-white font-medium">Rp
-                                        {{ number_format($payroll->gaji_tunjangan, 0, ',', '.') }}</span>
+                                <td class="px-4 py-4 text-right text-gray-300 font-mono">
+                                    {{ number_format($payroll->gaji_tunjangan, 0, ',', '.') }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-4 py-4 text-right">
                                     @php
                                         $totalPotongan =
                                             ($payroll->potongan_kronologi ?? 0) +
@@ -241,31 +158,28 @@
                                             ($payroll->potongan_alpha ?? 0) +
                                             ($payroll->potongan_terlambat ?? 0);
                                     @endphp
-                                    <span class="text-red-500 font-bold text-sm">
-                                        - Rp {{ number_format($totalPotongan, 0, ',', '.') }}
+                                    <span class="text-red-400 font-mono font-medium">
+                                        ({{ number_format($totalPotongan, 0, ',', '.') }})
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-white font-medium">Rp
-                                        {{ number_format($payroll->gaji_bersih, 0, ',', '.') }}</span>
+                                <td class="px-4 py-4 text-right">
+                                    <span class="text-green-400 font-mono font-bold text-base">
+                                        {{ number_format($payroll->gaji_bersih, 0, ',', '.') }}
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4 hidden-in-pdf">
-                                    <div class="flex space-x-2">
-                                        <a href="{{ route('slip.karyawan.detail', $payroll->id) }}"
-                                            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                                            <i class="fas fa-eye mr-2"></i> Detail
-                                        </a>
-                                    </div>
+                                <td class="px-4 py-4 text-center hidden-in-pdf">
+                                    <a href="{{ route('slip.karyawan.detail', $payroll->id) }}"
+                                        class="p-2 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20"
+                                        title="Lihat Detail">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="12" class="px-6 py-12 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <i class="fas fa-history text-4xl text-gray-600 mb-4"></i>
-                                        <p class="text-gray-400 text-lg">Tidak ada riwayat penggajian</p>
-                                        <p class="text-gray-500 text-sm">Silakan proses penggajian terlebih dahulu</p>
-                                    </div>
+                                <td colspan="8" class="px-6 py-12 text-center text-gray-500">
+                                    <i class="fas fa-inbox text-4xl mb-3 block"></i>
+                                    Belum ada data penggajian.
                                 </td>
                             </tr>
                         @endforelse
