@@ -149,8 +149,8 @@ class AbsenController extends Controller
     public function exportExcel(Request $request)
     {
         // Ambil bulan & tahun dari filter, kalau kosong pakai bulan sekarang
-        $month = $request->month ?? now()->month;
-        $year = $request->year ?? now()->year;
+        $month = (int) $request->query('month', now()->month);
+        $year = (int) $request->query('year', now()->year);
         
         // Nama file rapi: Laporan_Absensi_Maret_2026.xlsx
         $monthName = \Carbon\Carbon::create()->month($month)->translatedFormat('F');

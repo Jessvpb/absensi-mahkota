@@ -111,7 +111,13 @@
                 </div>
 
                 <div class="flex items-end">
-                    <a href="{{ route('absen.export', ['month' => \Carbon\Carbon::parse($bulan)->month, 'year' => \Carbon\Carbon::parse($bulan)->year]) }}"
+                    @php
+                        // Pecah string "2026-03" jadi angka murni
+                        $dateParts = explode('-', $bulan);
+                        $tahunMurni = (int) $dateParts[0];
+                        $bulanMurni = (int) $dateParts[1];
+                    @endphp
+                    <a href="{{ route('absen.export', ['month' => $bulanMurni, 'year' => $tahunMurni]) }}"
                         class="w-full px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-all duration-300 shadow-lg shadow-green-600/20 text-center flex items-center justify-center">
                         <i class="fas fa-file-excel mr-2"></i>
                         Export Excel
