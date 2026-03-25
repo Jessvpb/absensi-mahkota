@@ -14,37 +14,32 @@ class PengajuanIzinController extends Controller
 {
     public function view(Request $request)
     {
-        // Ambil nilai filter dari query string, defaultnya 'semua'
         $filter = $request->query('filter', 'semua');
-
-        // Query dasar
-        $user = Auth::user();
         $query = PengajuanIzin::with(['staff', 'detail_pengajuan_izin', 'admin']);
 
-        // Terapkan filter yang sudah sinkron dengan Blade
-        if ($filter === 'menunggu') {
-            $query->where(function ($q) {
-                // Belum di-acc admin DAN belum ditolak oleh siapapun
-                $q->whereNull('validasi_admin')
-                ->where(function($sub) {
-                    $sub->whereNull('validasi_kepalacabang')
-                        ->orWhere('validasi_kepalacabang', 1);
-                });
-            });
+        if ($filter === 'menunggu_kacab') {
+            // Kondisi: Kacab belum isi sama sekali
+            $query->whereNull('validasi_kepalacabang');
+
+        } elseif ($filter === 'menunggu_admin') {
+            // Kondisi: Kacab sudah ACC (1), tapi Admin belum isi (null)
+            $query->where('validasi_kepalacabang', 1)
+                ->whereNull('validasi_admin');
+
         } elseif ($filter === 'ditolak') {
+            // Kondisi: Salah satu menolak (0)
             $query->where(function ($q) {
-                // Ditolak salah satu sudah cukup masuk kategori ditolak
                 $q->where('validasi_admin', 0)
                 ->orWhere('validasi_kepalacabang', 0);
             });
-        } elseif ($filter === 'acc') { // SINKRONKAN: Ubah dari 'diterima' ke 'acc' sesuai value di Blade
+
+        } elseif ($filter === 'acc') {
+            // Kondisi: Dua-duanya sudah ACC (1)
             $query->where('validasi_admin', 1)
                 ->where('validasi_kepalacabang', 1);
         }
 
-        // Eksekusi query
         $dataPengajuan = $query->latest()->get();
-
         return view('pengajuan_izin.index', compact('dataPengajuan', 'filter'));
     }
 
