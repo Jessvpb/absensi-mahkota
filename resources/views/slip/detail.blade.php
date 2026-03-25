@@ -5,9 +5,23 @@
 @section('page-description', 'Lihat rincian gaji dan potongan karyawan')
 
 @section('content')
-    {{-- Di Controller kamu, absen_details sudah didefinisikan sebagai array --}}
     @php
-        $details = $payroll->absen_details;
+        // Ambil data langsung dari DB untuk memastikan angka TIDAK 0
+        $month = \Carbon\Carbon::parse($payroll->periode)->month;
+        $year = \Carbon\Carbon::parse($payroll->periode)->year;
+
+        $absenData = \App\Models\Absen::where('staff_id', $payroll->staff_id)
+            ->whereMonth('tanggal', $month)
+            ->whereYear('tanggal', $year)
+            ->get();
+
+        // Hitung real-time dari database
+        $alphaCount = $absenData->where('status', 'A')->count();
+        $terlambatCount = $absenData->where('status', 'T')->count();
+        $sakitCount = $absenData->where('status', 'S')->count();
+        $izinCount = $absenData->where('status', 'I')->count();
+        $offCount = $absenData->where('status', 'O')->count();
+        $totalIzin = $sakitCount + $izinCount + $offCount;
     @endphp
 
     <div class="space-y-6">
@@ -26,7 +40,6 @@
                         </p>
                     </div>
                 </div>
-                {{-- Gunakan url()->previous() agar fleksibel kembali ke riwayat mana saja --}}
                 <a href="{{ url()->previous() }}"
                     class="inline-flex items-center px-5 py-2.5 bg-gray-700/50 text-white font-bold rounded-xl hover:bg-gray-600 transition-all border border-gray-600">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
@@ -64,6 +77,7 @@
                                 - Rp {{ number_format($payroll->potongan_kronologi ?? 0, 0, ',', '.') }}
                             </td>
                         </tr>
+
                         <tr class="hover:bg-red-500/5 transition-colors">
                             <td class="px-6 py-5 text-gray-300 font-bold text-base border-l-4 border-red-500/50">Potongan
                                 Peminjaman (Kasbon)</td>
@@ -78,31 +92,32 @@
                             <td class="px-6 py-5 text-right font-mono text-xl text-red-400 font-bold">
                                 - Rp {{ number_format($payroll->potongan_alpha ?? 0, 0, ',', '.') }}
                                 <p class="text-gray-400 text-sm font-sans font-bold mt-1 italic">
-                                    Total: {{ $details['alpha_days'] ?? 0 }} Hari
+                                    Total: {{ $alphaCount }} Hari
                                 </p>
                             </td>
                         </tr>
+
                         <tr class="hover:bg-red-500/5 transition-colors">
                             <td class="px-6 py-5 text-gray-300 font-bold text-base border-l-4 border-red-500/50">Potongan
                                 Izin / Melebihi Kuota</td>
                             <td class="px-6 py-5 text-right font-mono text-xl text-red-400 font-bold">
                                 - Rp {{ number_format($payroll->potongan_izin ?? 0, 0, ',', '.') }}
                                 <div class="text-gray-400 text-sm font-sans font-bold mt-2 text-right italic">
-                                    <span class="block">• Sakit: {{ $details['sakit_days'] ?? 0 }} hari</span>
-                                    <span class="block">• Izin: {{ $details['izin_days'] ?? 0 }} hari</span>
-                                    <span class="block">• Off: {{ $details['off_days'] ?? 0 }} hari</span>
-                                    <span class="block text-white/50">• Total Izin: {{ $details['total_izin'] ?? 0 }}
-                                        hari</span>
+                                    <span class="block">• Sakit: {{ $sakitCount }} hari</span>
+                                    <span class="block">• Izin: {{ $izinCount }} hari</span>
+                                    <span class="block">• Off: {{ $offCount }} hari</span>
+                                    <span class="block text-white/50">• Total Digabung: {{ $totalIzin }} hari</span>
                                 </div>
                             </td>
                         </tr>
+
                         <tr class="hover:bg-red-500/5 transition-colors">
                             <td class="px-6 py-5 text-gray-300 font-bold text-base border-l-4 border-red-500/50">Potongan
                                 Terlambat</td>
                             <td class="px-6 py-5 text-right font-mono text-xl text-red-400 font-bold">
                                 - Rp {{ number_format($payroll->potongan_terlambat ?? 0, 0, ',', '.') }}
                                 <p class="text-gray-400 text-sm font-sans font-bold mt-1 italic">
-                                    Total: {{ $details['terlambat_days'] ?? 0 }} Hari
+                                    Total: {{ $terlambatCount }} Hari
                                 </p>
                             </td>
                         </tr>
