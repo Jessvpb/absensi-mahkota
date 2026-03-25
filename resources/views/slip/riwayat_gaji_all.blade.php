@@ -13,26 +13,84 @@
                 border: 1px solid #ddd;
                 box-shadow: none;
             }
+
             .bg-gradient-to-r {
                 background: none !important;
                 color: #000 !important;
                 border: 1px solid #000;
             }
-            .text-white { color: #000 !important; }
-            .text-gray-300, .text-gray-400, .text-gray-500 { color: #333 !important; }
-            .text-yellow-400 { color: #000 !important; }
-            .text-red-400 { color: #000 !important; }
-            .text-purple-400 { color: #000 !important; }
-            .bg-blue-600, .hover\:bg-blue-700:hover { background: none !important; border: 1px solid #000; color: #000 !important; }
-            .bg-green-500, .hover\:bg-green-600:hover { background: none !important; border: 1px solid #000; color: #000 !important; }
-            .hover\:bg-gray-800\/30:hover { background: none !important; }
-            .transform, .hover\:scale-105:hover { transform: none !important; }
-            table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #000; padding: 8px; }
-            th { background-color: #f2f2f2; }
-            .text-right { text-align: right; }
-            .text-center { text-align: center; }
-            .hidden-in-pdf { display: none !important; }
+
+            .text-white {
+                color: #000 !important;
+            }
+
+            .text-gray-300,
+            .text-gray-400,
+            .text-gray-500 {
+                color: #333 !important;
+            }
+
+            .text-yellow-400 {
+                color: #000 !important;
+            }
+
+            .text-red-400 {
+                color: #000 !important;
+            }
+
+            .text-purple-400 {
+                color: #000 !important;
+            }
+
+            .bg-blue-600,
+            .hover\:bg-blue-700:hover {
+                background: none !important;
+                border: 1px solid #000;
+                color: #000 !important;
+            }
+
+            .bg-green-500,
+            .hover\:bg-green-600:hover {
+                background: none !important;
+                border: 1px solid #000;
+                color: #000 !important;
+            }
+
+            .hover\:bg-gray-800\/30:hover {
+                background: none !important;
+            }
+
+            .transform,
+            .hover\:scale-105:hover {
+                transform: none !important;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #000;
+                padding: 8px;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            .text-right {
+                text-align: right;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+
+            .hidden-in-pdf {
+                display: none !important;
+            }
         }
     </style>
 
@@ -46,7 +104,7 @@
                 </div>
                 <div>
                     <a href="{{ route('slip.riwayat.pdf') }}"
-                       class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105">
+                        class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105">
                         <i class="fas fa-file-pdf mr-2"></i>
                         Cetak PDF
                     </a>
@@ -65,7 +123,8 @@
                 <!-- Month Filter -->
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Bulan</label>
-                    <select name="month" class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all">
+                    <select name="month"
+                        class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all">
                         <option value="">-- Semua Bulan --</option>
                         @for ($i = 1; $i <= 12; $i++)
                             <option value="{{ $i }}" {{ request('month') == $i ? 'selected' : '' }}>
@@ -78,7 +137,8 @@
                 <!-- Year Filter -->
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Tahun</label>
-                    <select name="year" class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all">
+                    <select name="year"
+                        class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all">
                         <option value="">-- Semua Tahun --</option>
                         @for ($i = 2020; $i <= now()->year; $i++)
                             <option value="{{ $i }}" {{ request('year') == $i ? 'selected' : '' }}>
@@ -126,26 +186,6 @@
                                 Tunjangan
                             </th>
                             <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-minus-circle mr-2 text-yellow-400"></i>
-                                Pot. Denda
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-minus-circle mr-2 text-yellow-400"></i>
-                                Pot. Peminjaman
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-minus-circle mr-2 text-yellow-400"></i>
-                                Pot. Izin
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-minus-circle mr-2 text-yellow-400"></i>
-                                Pot. Alpha
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
-                                <i class="fas fa-minus-circle mr-2 text-yellow-400"></i>
-                                Pot. Terlambat
-                            </th>
-                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
                                 <i class="fas fa-wallet mr-2 text-yellow-400"></i>
                                 Gaji Bersih
                             </th>
@@ -159,51 +199,43 @@
                         @forelse($payrolls as $payroll)
                             <tr class="hover:bg-gray-800/30 transition-colors duration-200">
                                 <td class="px-6 py-4">
-                                    <span class="text-white">{{ \Carbon\Carbon::parse($payroll->periode)->format('F Y') }}</span>
+                                    <span
+                                        class="text-white">{{ \Carbon\Carbon::parse($payroll->periode)->format('F Y') }}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-400/20 to-amber-500/20 rounded-full flex items-center justify-center mr-3">
+                                        <div
+                                            class="w-10 h-10 bg-gradient-to-br from-yellow-400/20 to-amber-500/20 rounded-full flex items-center justify-center mr-3">
                                             <i class="fas fa-user text-yellow-400"></i>
                                         </div>
                                         <div>
-                                            <div class="text-white font-medium">{{ $payroll->staff->nama ?? 'Tidak Diketahui' }}</div>
+                                            <div class="text-white font-medium">
+                                                {{ $payroll->staff->nama ?? 'Tidak Diketahui' }}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-400 border border-purple-500/30">
                                         {{ $payroll->cabang->nama_cabang ?? '-' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <span class="text-white font-medium">Rp {{ number_format($payroll->gaji_pokok, 0, ',', '.') }}</span>
+                                    <span class="text-white font-medium">Rp
+                                        {{ number_format($payroll->gaji_pokok, 0, ',', '.') }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <span class="text-white font-medium">Rp {{ number_format($payroll->gaji_tunjangan, 0, ',', '.') }}</span>
+                                    <span class="text-white font-medium">Rp
+                                        {{ number_format($payroll->gaji_tunjangan, 0, ',', '.') }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <span class="text-red-400 font-medium">Rp {{ number_format($payroll->potongan_kronologi, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-red-400 font-medium">Rp {{ number_format($payroll->potongan_hutang, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-red-400 font-medium">Rp {{ number_format($payroll->potongan_izin, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-red-400 font-medium">Rp {{ number_format($payroll->potongan_alpha, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-red-400 font-medium">Rp {{ number_format($payroll->potongan_terlambat, 0, ',', '.') }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="text-white font-medium">Rp {{ number_format($payroll->gaji_bersih, 0, ',', '.') }}</span>
+                                    <span class="text-white font-medium">Rp
+                                        {{ number_format($payroll->gaji_bersih, 0, ',', '.') }}</span>
                                 </td>
                                 <td class="px-6 py-4 hidden-in-pdf">
                                     <div class="flex space-x-2">
                                         <a href="{{ route('slip.karyawan.detail', $payroll->id) }}"
-                                           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                            class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                                             <i class="fas fa-eye mr-2"></i> Detail
                                         </a>
                                     </div>
