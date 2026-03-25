@@ -5,11 +5,9 @@
 @section('page-description', 'Lihat rincian gaji dan potongan karyawan')
 
 @section('content')
+    {{-- Di Controller kamu, absen_details sudah didefinisikan sebagai array --}}
     @php
-        // Memastikan absen_details terbaca sebagai array/object
-        $details = is_string($payroll->absen_details)
-            ? json_decode($payroll->absen_details, true)
-            : $payroll->absen_details;
+        $details = $payroll->absen_details;
     @endphp
 
     <div class="space-y-6">
@@ -28,7 +26,8 @@
                         </p>
                     </div>
                 </div>
-                <a href="{{ route('slip.riwayat') }}"
+                {{-- Gunakan url()->previous() agar fleksibel kembali ke riwayat mana saja --}}
+                <a href="{{ url()->previous() }}"
                     class="inline-flex items-center px-5 py-2.5 bg-gray-700/50 text-white font-bold rounded-xl hover:bg-gray-600 transition-all border border-gray-600">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali
                 </a>
@@ -78,7 +77,7 @@
                                 Alpha</td>
                             <td class="px-6 py-5 text-right font-mono text-xl text-red-400 font-bold">
                                 - Rp {{ number_format($payroll->potongan_alpha ?? 0, 0, ',', '.') }}
-                                <p class="text-gray-400 text-sm font-sans font-bold mt-1">
+                                <p class="text-gray-400 text-sm font-sans font-bold mt-1 italic">
                                     Total: {{ $details['alpha_days'] ?? 0 }} Hari
                                 </p>
                             </td>
@@ -88,10 +87,12 @@
                                 Izin / Melebihi Kuota</td>
                             <td class="px-6 py-5 text-right font-mono text-xl text-red-400 font-bold">
                                 - Rp {{ number_format($payroll->potongan_izin ?? 0, 0, ',', '.') }}
-                                <div class="text-gray-400 text-sm font-sans font-bold mt-2 text-right">
+                                <div class="text-gray-400 text-sm font-sans font-bold mt-2 text-right italic">
                                     <span class="block">• Sakit: {{ $details['sakit_days'] ?? 0 }} hari</span>
                                     <span class="block">• Izin: {{ $details['izin_days'] ?? 0 }} hari</span>
                                     <span class="block">• Off: {{ $details['off_days'] ?? 0 }} hari</span>
+                                    <span class="block text-white/50">• Total Izin: {{ $details['total_izin'] ?? 0 }}
+                                        hari</span>
                                 </div>
                             </td>
                         </tr>
@@ -100,7 +101,7 @@
                                 Terlambat</td>
                             <td class="px-6 py-5 text-right font-mono text-xl text-red-400 font-bold">
                                 - Rp {{ number_format($payroll->potongan_terlambat ?? 0, 0, ',', '.') }}
-                                <p class="text-gray-400 text-sm font-sans font-bold mt-1">
+                                <p class="text-gray-400 text-sm font-sans font-bold mt-1 italic">
                                     Total: {{ $details['terlambat_days'] ?? 0 }} Hari
                                 </p>
                             </td>
