@@ -186,6 +186,10 @@
                                 Tunjangan
                             </th>
                             <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                                <i class="fas fa-file-invoice-dollar mr-2 text-red-400"></i>
+                                Total Potongan
+                            </th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-300 uppercase tracking-wider">
                                 <i class="fas fa-wallet mr-2 text-yellow-400"></i>
                                 Gaji Bersih
                             </th>
@@ -227,6 +231,19 @@
                                 <td class="px-6 py-4 text-right">
                                     <span class="text-white font-medium">Rp
                                         {{ number_format($payroll->gaji_tunjangan, 0, ',', '.') }}</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    @php
+                                        $totalPotongan =
+                                            ($payroll->potongan_kronologi ?? 0) +
+                                            ($payroll->potongan_hutang ?? 0) +
+                                            ($payroll->potongan_izin ?? 0) +
+                                            ($payroll->potongan_alpha ?? 0) +
+                                            ($payroll->potongan_terlambat ?? 0);
+                                    @endphp
+                                    <span class="text-red-500 font-bold text-sm">
+                                        - Rp {{ number_format($totalPotongan, 0, ',', '.') }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <span class="text-white font-medium">Rp
